@@ -170,7 +170,7 @@
                                 <div class="contentEditableContainer contentImageEditable">
                                       <div class="contentEditable">
                                         <img src="https://vigilcore.com/wp-content/uploads/2023/08/vigilcore_340x156_transparent-300x138.png" width='200' height='auto' alt='' data-default="placeholder" data-max-width="560" style="margin: 0 auto;">
-                                        {{-- <img src="{{ asset('images/pacom_logo.jpg') }}" width="200" /> --}}
+                                        {{-- <img src="{{ asset('public/images/pacom_logo.jpg') }}" width="200" /> --}}
                                       </div>
                                     </div>
                               </td>

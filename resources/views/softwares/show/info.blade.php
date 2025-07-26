@@ -180,7 +180,7 @@
                       @if( $photo )
 
                         <div class="photo" style="padding-right: 20px;">
-                          <img src="{{ asset('images/uploads/' . $photo ) }}"  width="64" />
+                          <img src="{{ asset('public/images/uploads/' . $photo ) }}"  width="64" />
 
                         </div>
 
@@ -188,7 +188,7 @@
 
                         <div class="photo" style="padding-right: 20px;">
 
-                          <img src="{{ asset('images/user-placeholder.png') }}" width="64" />
+                          <img src="{{ asset('public/images/user-placeholder.png') }}" width="64" />
 
                         </div>
 
@@ -211,7 +211,7 @@
 
                       @if( $photo )
 
-                        <div class="photo" style="padding-right: 20px;"><img src="{{ asset('images/uploads/' . $photo ) }}"  width="64" /></div>
+                        <div class="photo" style="padding-right: 20px;"><img src="{{ asset('public/images/uploads/' . $photo ) }}"  width="64" /></div>
 
                       @else
 

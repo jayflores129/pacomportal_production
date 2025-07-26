@@ -4,7 +4,7 @@
 <div class="container position-ref">
     <div class="register-form">
             <div class="title m-b-md">
-                <img src="{{ asset('images/pacom_logo.jpg') }}" width="100%" />
+                <img src="{{ asset('public/images/pacom_logo.jpg') }}" width="100%" />
                 <h3 style="margin-top:20px;">Reset Password</h3>
             </div>
             @if (Route::has('login'))

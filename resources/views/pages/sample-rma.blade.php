@@ -11,10 +11,10 @@
                     <h2>Here are the serial number examples</h2>
                 </div>
                 <div class="col-md-4">
-                    <div class="image-1"><img src="{{ asset('images//rma-ex1.png') }}" width="100%" /></div> 
+                    <div class="image-1"><img src="{{ asset('public/images//rma-ex1.png') }}" width="100%" /></div> 
                 </div>
                 <div class="col-md-4">
-                    <div class="image-2"><img src="{{ asset('images//rma-ex2.png') }}" width="100%" /></div> 
+                    <div class="image-2"><img src="{{ asset('public/images//rma-ex2.png') }}" width="100%" /></div> 
                 </div>
             </div>
     </div>

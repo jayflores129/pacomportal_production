@@ -253,7 +253,7 @@
              </table>
        
                 <input type="hidden" name="status"  value="open" />
-                <div class="hide loading"><div><img src="{{ asset('images/loading.gif') }}" /></div></div>
+                <div class="hide loading"><div><img src="{{ asset('public/images/loading.gif') }}" /></div></div>
                  
                 <div class="form-btn-wrap">
                   <button type="submit" id="submitRepair" class="btn-brand btn-brand-icon btn-brand-primary btn-main">Submit Request</button>

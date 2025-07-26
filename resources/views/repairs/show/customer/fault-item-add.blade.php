@@ -1,7 +1,7 @@
 
 <div class="add-item-popup hide">
     <div class="popup-block">
-      <div class="loading"><div><img src="{{ asset('images/loading.gif') }}" /></div></div>
+      <div class="loading"><div><img src="{{ asset('public/images/loading.gif') }}" /></div></div>
       <div class="popup-heading"><span>Add Item</span><button id="btn-add-close">x</button></div>
       <div class="popup-body">
 

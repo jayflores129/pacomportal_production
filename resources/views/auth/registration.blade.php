@@ -4,7 +4,7 @@
 <div class="container position-ref">
     <div class="register-form">
             <div class="title m-b-md">
-                <a href="{{ url('/') }}"><img src="{{ asset('images/pacom_logo.jpg') }}" width="300" /></a>
+                <a href="{{ url('/') }}"><img src="{{ asset('public/images/pacom_logo.jpg') }}" width="300" /></a>
             </div>
             <h3>Registration</h3>
 
