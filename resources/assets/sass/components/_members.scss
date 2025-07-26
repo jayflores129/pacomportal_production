@@ -1,0 +1,56 @@
+.members-section {
+    background: #fff;
+}
+.single-member {
+    display: flex;
+    padding: 10px;
+
+    border-bottom: 1px solid #f7f6f6;
+
+    .user {
+        width: 100px;
+    }
+    .img {
+        width: 40px;
+        height: 40px;
+        padding: 0 5px 5px;
+
+        border-radius: 4px;
+    }
+    .detail {
+        width: calc(100% - 70px);
+        padding-left: 10px;
+
+        p {
+            margin-bottom: 0;
+
+            font-size: 16px;
+
+            color: #1d6fb8;
+        }
+        span {
+            font-size: 13px;
+
+            color: #b1afaf;
+
+            span {
+                color: #222;
+            }
+        }
+    }
+    .task-view {
+        width: 30px;
+
+        align-self: center;
+        -ms-grid-row-align: center;
+
+        span {
+            display: block;
+            float: right;
+
+            font-size: 11px;
+
+            color: #d6d2d2;
+        }
+    }
+}

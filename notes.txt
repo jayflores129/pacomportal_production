@@ -1,0 +1,17 @@
+roles table added new column 'text'
+
+
+Permission type (User Role)
+    - it now uses the 3 type of permission from old SPG portal
+    - to update to user role go to the User Edit Page
+    - the Update Permission Page is removed
+    
+Pagination
+    - its now updated from "Previous" and "Next" to page numbering
+
+Approve function not working
+    - fixed
+
+If a user role is Admin, then can’t edit other user who also has Role as Admin?
+    - fixed
+

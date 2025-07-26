@@ -1,0 +1,40 @@
+#app {
+    overflow: hidden;
+}
+.inner-content {
+    min-width: 800px;
+    padding: 80px 0 0 20px;
+    margin-left: 250px;
+
+    @include single-transition(margin-left, .3s, ease-in-out, 0s);
+    @include breakpoint(992) {
+        width: 100%;
+        min-width: 100%;
+        padding: 70px 0 0 0;
+        margin-left: 0;
+    }
+
+    &.toggle {
+        margin-left: 50px;
+    }
+}
+
+.content-navigation {
+    padding: 15px;
+    margin-bottom: 10px;
+
+    background: #fff;
+
+    li {
+        display: inline-block;
+        margin-right: 10px;
+    }
+}
+
+.panel-top {
+    padding: 20px;
+
+    .btn {
+        margin-bottom: 0;
+    }
+}

@@ -1,0 +1,12 @@
+.breadcrumb {
+    padding: 8px 0;
+    margin: 0;
+
+    background: transparent;
+
+    > li + li:before {
+        @include breakpoint(580) {
+            padding: 0 1px;
+        }
+    }
+}

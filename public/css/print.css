@@ -1,0 +1,73 @@
+.sidebar, 
+.site-navigation,
+.header-left .top-menu,
+.panel-top,
+#addComment,
+#addStatus,
+.itemViewBTN,
+.EditBTN, 
+.DelBTN,
+.delRMAStatus,
+.delRMAComments,
+#addItem, 
+.nav-button, 
+.site-header,
+#updateStatus
+ {
+    display: none;
+}
+@page {
+    margin: 10px 0;
+}
+.sidebar {
+    width: 0;
+    padding: 0;
+}
+.inner-content {
+    min-width: 100%;
+    margin-left: 0;
+    padding: 0;
+}
+.main-content {
+    padding: 0;
+}
+.table-m-height {
+    max-height: inherit;
+    overflow-y: hidden; 
+}
+.inner-content .panel-brand:last-child {
+    display: none;
+}
+.find-user .heading, .item-list .heading {
+    padding: 5px 0;
+}
+#RMARequestDetails td:nth-child(4) {
+    column-span: all;
+}
+#RMARequestDetails td:nth-child(7),
+#RMARequestDetails td:nth-child(5),
+#RMARequestDetails td:nth-child(6),
+#RMARequestDetails th:nth-child(7),
+#RMARequestDetails th:nth-child(5),
+#RMARequestDetails th:nth-child(6),
+#RMARequestDetails th:last-child {
+    display:none;
+}
+#RMARequestDetails th:nth-child(1) {
+    width: 100px;
+}
+#RMARequestDetails th:nth-child(3) {
+    width: 250px;
+}
+.main-content {
+    padding: 0;
+}
+.item-list .heading {
+    padding-left: 0 !important;
+}
+.for-printing {
+    display: block !important;
+}
+.panel-body {
+    padding: 30px 0;
+}

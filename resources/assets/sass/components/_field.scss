@@ -1,0 +1,16 @@
+.field {
+    padding: 10px 0;
+
+    border-bottom: 1px solid #f7f6f6;
+    label {
+        float: left;
+        width: 150px;
+        margin: 0;
+    }
+    p {
+        float: right;
+        width: calc(100% - 150px);
+
+        word-break: break-word;
+    }
+}

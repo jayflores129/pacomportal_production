@@ -1,0 +1,203 @@
+.site-header {
+    position: fixed;
+    top: 0;
+    z-index: 200;
+
+    width: 100%;
+
+    background: #fff;
+    box-shadow: 0 2px 10px 0 rgba(29, 28, 28, .3);
+
+    .inner-header {
+        display: flex;
+
+        justify-content: space-between;
+    }
+    .header-left {
+        display: flex;
+    }
+    .site-logo {
+        padding: 5px 10px;
+
+        @include breakpoint(480) {
+            img {
+                width: 80px;
+            }
+        }
+
+        span {
+            display: inline-block;
+            margin-right: 10px;
+            margin-left: 5px;
+
+            @include breakpoint(480) {
+                display: none;
+            }
+        }
+    }
+    .header-right {
+        display: flex;
+        margin-right: -5px;
+
+        text-align: right;
+
+        align-self: center;
+        img {
+            margin-right: 5px;
+
+            border-radius: 50%;
+        }
+        .site-navigation > li {
+            display: inline-block;
+            float: none;
+            margin-left: 8px;
+
+            > a {
+                display: block;
+                padding: 8px;
+            }
+        }
+        .dropdown-menu {
+            right: 0;
+            left: auto;
+
+            text-align: right;
+        }
+    }
+
+    .notification-group-icon {
+        text-align: center;
+
+        color: #004181;
+        span {
+            margin-left: 0;
+
+            font-size: 13px;
+        }
+        .badge {
+            position: absolute;
+            top: -2px;
+            right: 1px;
+
+            padding: 2px 4px;
+
+            font-size: 8px;
+
+            background: #fb9210;
+        }
+    }
+    .top-menu {
+        display: flex;
+        margin: 0;
+
+        align-self: center;
+        @include breakpoint(500) {
+            display: none;
+        }
+        li {
+            display: inline-block;
+            margin-right: 12px;
+
+            font-size: 13px;
+
+
+            a {
+                display: block;
+
+                font-weight: 600;
+                line-height: 30px;
+
+                color: #4a4949;
+
+                &:hover {
+                    text-decoration: none;
+
+                    color: #222;
+                }
+                span {
+                    @include breakpoint(767) {
+                        display: none;
+                    }
+                }
+                i {
+                    margin-right: 2px;
+
+                    color: #777;
+
+                    @include breakpoint(767) {
+                        font-size: 15px;
+                    }
+                }
+            }
+        }
+    }
+}
+.top-button-menu {
+    display: none;
+    padding: 0 6px;
+    margin-left: -20px;
+
+    background: #113252;
+
+    align-items: center;
+    @include breakpoint(992) {
+        display: flex;
+        margin-left: -20px;
+    }
+    @include breakpoint(500) {
+        margin-left: -20px;
+    }
+    @include breakpoint(480) {
+        margin-left: -11px;
+    }
+    justify-content: center;
+}
+.top-search-box {
+    position: fixed;
+    top: -100px;
+    z-index: 100;
+
+    width: 100%;
+    padding: 10px 20px;
+
+    transition: top .3s ease;
+
+    background: #fff;
+    box-shadow: 0 1px 10px rgba(45, 43, 43, .8);
+
+    &.is-show {
+        top: 50px;
+
+        @include breakpoint(500) {
+            top: 43px;
+        }
+    }
+
+    input {
+        height: 40px !important;
+    }
+}
+
+.marker {
+    color: #f75b2d !important;
+}
+
+#sideMenu {
+    display: none;
+    width: 27px;
+
+    font-size: 16px;
+
+    color: #fff;
+    border: 0;
+    background: #113252;
+
+    @include breakpoint(992) {
+        display: block;
+    }
+
+    &:active,
+    &:focus {
+        outline: none;
+    }
+}

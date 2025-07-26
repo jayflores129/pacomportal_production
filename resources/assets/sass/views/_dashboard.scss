@@ -1,0 +1,173 @@
+/* =============================
+Change Default View on Bootstrap
+============================  */
+.form-v {
+    .form-group {
+        .control-label {
+            display: block;
+            width: 100%;
+        }
+    }
+}
+
+.btn-upload {
+    padding: 5px 10px;
+
+    border: 0;
+}
+
+.navbar-brand {
+    padding: 4px 15px;
+}
+.navbar-default {
+    border-color: transparent;
+    box-shadow: 0 0 5px #9c9c9c;
+}
+.panel-default {
+    min-height: 300px;
+
+    > .panel-heading {
+        color: #fff;
+        border-color: #d3e0e9;
+        background-color: #1d6fb8;
+    }
+}
+
+
+/* =============================
+Action page
+============================  */
+.action {
+    max-width: 500px;
+    min-height: 300px;
+    padding: 20px;
+
+    h4 {
+        margin-bottom: 30px;
+
+        font-weight: 600;
+    }
+    form {
+        margin-top: 50px;
+    }
+}
+
+
+/* =============================
+Repair Page
+============================  */
+
+.repair-tab {
+    .table {
+        tr {
+            td {
+                &:first-child {
+                    width: 20%;
+                }
+            }
+        }
+    }
+    .menu {
+        margin-bottom: 50px;
+
+        border-bottom: 1px solid #ece7e7;
+
+        li {
+            display: inline-block;
+            margin: 5px 5px 5px 0;
+
+            font-weight: 600;
+
+            border-radius: 5px;
+
+            a {
+                display: block;
+                padding: 5px 10px;
+
+                border-radius: 5px;
+
+                &:hover,
+                &:focus {
+                    text-decoration: none;
+                }
+                &.menu-item.active {
+                    color: #fff;
+                    background: #004181;
+                }
+            }
+        }
+    }
+}
+
+/* =============================
+Upload Page
+============================  */
+
+.upload-tab {
+    padding-top: 20px;
+
+    border: 0;
+    border: 1px solid #ece8e8;
+    border-radius: 0;
+
+    .form {
+        min-height: 600px;
+        padding: 20px;
+
+        background: #fff;
+
+        @include breakpoint(600) {
+            padding: 10px;
+        }
+
+        .form-group {
+            padding: 10px;
+            margin-bottom: 15px;
+
+            border: 1px solid #e6e5e5;
+            border-radius: 5px;
+            background: #f7f6f6;
+        }
+    }
+}
+
+
+/* =============================
+User Page
+============================  */
+.option-nav {
+    @include breakpoint(580) {
+        padding-top: 20px;
+
+        text-align: center;
+    }
+}
+.form {
+    .radio {
+        display: inline-block;
+        margin: 10px 20px;
+    }
+}
+
+
+.list-to-approve {
+    button {
+        display: inline-block;
+
+        &:focus {
+            outline: none;
+        }
+    }
+    .fa-thumbs-up {
+        &:hover {
+            background-color: #000;
+        }
+    }
+}
+.change-permission {
+    .btn-submit {
+        color: #fff;
+        border-color: #2a88bd;
+        background-color: #3097d1;
+    }
+}

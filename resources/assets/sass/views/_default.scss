@@ -1,0 +1,133 @@
+/* =============================
+  BG Colour
+  ============================  */
+.box-bg {
+    display: inline-block;
+    padding: 2px 4px;
+
+    font-size: 13px;
+
+    color: #fff;
+}
+.bg-color-1,
+.bg-primary {
+    background: #fb9210;
+}
+.bg-color-2,
+.bg-secondary {
+    color: #fff;
+    background: #004181;
+}
+.bg-color-3,
+.bg-success {
+    color: #fff;
+    background: #2ba01c;
+}
+.bg-color-4,
+.bg-warning {
+    color: #fff;
+    background: #dc3030;
+}
+.bg-color-5 {
+    color: #fff;
+    background: #252524;
+}
+.bg-color-6,
+.bg-info {
+    color: #fff;
+    background: #ae68d2;
+}
+.bg-danger {
+    color: #fff;
+    background: #d03814;
+}
+
+.text-color-1 {
+    color: #126696;
+}
+.text-color-2 {
+    color: #1cad1b;
+}
+.text-color-3 {
+    color: #e68308;
+}
+
+/* =============================
+  Repair Page
+  ============================  */
+.repair-tab .table tr td:first-child {
+    width: 10%;
+}
+
+.repair-tab .menu {
+    padding: 5px;
+    margin-bottom: 20px;
+
+    border-bottom: 1px solid #ece7e7;
+}
+
+.repair-tab .menu li {
+    display: inline-block;
+    margin: 5px 20px 5px 0;
+
+    font-weight: 600;
+
+    border-radius: 5px;
+}
+
+.repair-tab .menu li a {
+    display: block;
+    padding: 5px;
+
+    color: #004181;
+    border-radius: 5px;
+}
+.repair-tab .menu li a:hover,
+.repair-tab .menu li a.menu-item.active {
+    text-decoration: none;
+
+    color: #222;
+    background: #7ed61e;
+}
+
+
+/* =============================
+  History Section
+  ============================  */
+.history-section .table tr td:first-child {
+    width: 10%;
+}
+.history-section .table tr td:nth-child(2) {
+    width: 60%;
+}
+
+/* =============================
+  Upload Page
+  ============================  */
+.upload-tab {
+    padding-top: 20px;
+
+    border: 0;
+    border: 1px solid #ece8e8;
+    border-radius: 3px;
+}
+
+.upload-tab .form {
+    min-height: 600px;
+
+    background: #fff;
+}
+
+@media only screen and (max-width: 600px) {
+    .upload-tab .form {
+        padding: 10px;
+    }
+}
+
+
+.float-right {
+    float: right;
+}
+.float-left {
+    float: left;
+}

@@ -1,0 +1,425 @@
+.single-task {
+    padding: 10px 0;
+
+    .task-owner {
+        display: flex;
+
+        .img {
+            width: 50px;
+            height: 50px;
+            padding: 0 5px 5px;
+        }
+        .info {
+            width: calc(100% - 50px);
+            padding-left: 10px;
+        }
+        strong {
+            display: block;
+        }
+        span {
+            font-size: 12px;
+
+            color: #afaeae;
+        }
+    }
+    .summary {
+        p {
+            font-size: 20px;
+            font-weight: 600;
+        }
+    }
+    .field {
+        label {
+            font-weight: 500;
+
+            color: #989696;
+        }
+    }
+}
+.task-holder {
+    @include breakpoint(992) {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+
+        -webkit-transform: translate(-50%, -50%);
+                transform: translate(-50%, -50%);
+
+        box-shadow: 0 2px 33px rgba(45, 43, 43, .7);
+    }
+    @include breakpoint(480) {
+        width: calc(100% - 20px) !important;
+        margin-left: 0 !important;
+    }
+}
+.task-holder,
+.comment-wrapper {
+    width: 400px;
+    margin-left: 5px;
+
+    background: #fff;
+    box-shadow: 0 3px 13px 0 rgba(195, 195, 195, .5);
+
+
+    &.is-hide {
+        display: none;
+        width: 0;
+    }
+    .task-heading {
+        padding: 15px 15px;
+
+        color: #f5f5f5;
+        background: #3097d1;
+
+        button {
+            float: right;
+
+            border: 0;
+            background-color: transparent;
+        }
+    }
+    .task-body {
+        padding: 5px 10px 5px 15px;
+    }
+    .scrollable {
+        max-height: 500px;
+        overflow-y: auto;
+    }
+    .mod-content {
+        min-height: 30px;
+        padding: 10px 0;
+        margin-bottom: 10px;
+
+        &.task-summary {
+            font-size: 15px;
+            line-height: 1.6;
+
+            color: #222;
+            border-bottom: 1px solid #f5f4f4;
+        }
+        strong {
+            display: block;
+            margin-bottom: 10px;
+
+            font-size: 13px;
+
+            color: #272626;
+
+            span {
+                padding: 3px;
+                margin-right: 3px;
+
+                font-size: 10px;
+
+                color: #022e5a;
+                border-radius: 3px;
+                background: #f5f5f5;
+            }
+        }
+    }
+    .property,
+    .two-cols .wrap {
+        display: flex;
+    }
+    .item {
+        .name {
+            width: 100px;
+
+            font-weight: 500;
+
+            color: #a5a2a2;
+        }
+    }
+    .task-info  a {
+        font-size: 13px;
+    }
+}
+.attachment-wrapper {
+    width: calc(100% - 400px);
+    max-height: 800px;
+    margin: 0 -5px;
+    overflow-y: auto;
+
+    @include breakpoint(767) {
+        width: 100%;
+    }
+    &.is-wide {
+        width: 100%;
+    }
+}
+.task-status-view {
+    display: flex;
+    width: calc(100% - 400px);
+    max-height: 800px;
+    margin: 0 -5px;
+    overflow-y: auto;
+
+    flex-wrap: wrap;
+    @include breakpoint(992) {
+        width: 100%;
+    }
+    justify-content: space-around;
+    &.is-wide {
+        width: 100%;
+    }
+    .col {
+        width: calc(33.333333% - 5px);
+        padding: 0 5px;
+
+        @include breakpoint(992) {
+            width: 100%;
+        }
+    }
+
+    h3 {
+        padding-bottom: 15px;
+        margin-bottom: 20px;
+
+        font-size: 15px;
+
+        border-bottom: 3px solid #d1d5d8;
+    }
+    a {
+        &:hover,
+        &:focus {
+            text-decoration: none;
+        }
+    }
+    .single-status {
+        display: flex;
+        padding: 10px 10px;
+        margin-bottom: 5px;
+
+        border: 1px solid #e0dede;
+        background: #fbfbfb;
+
+        align-items: center;
+        justify-content: space-around;
+
+        p {
+            color: #908f8f;
+        }
+        .col-left {
+            width: calc(100% - 30px);
+            padding-right: 5px;
+        }
+        .col-right {
+            width: 30px;
+        }
+    }
+}
+.single-task-tab {
+    > ul {
+        > li {
+            &.active {
+                > a {
+                    color: #222 !important;
+                    background: #fff !important;
+                }
+            }
+        }
+        a {
+            font-weight: 600;
+
+            color: #353434;
+        }
+        span {
+            @include breakpoint(480) {
+                display: none;
+            }
+        }
+    }
+}
+.single-task-content {
+    border-right: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    border-left: 1px solid #ddd;
+
+    .panel {
+        margin-bottom: 0;
+    }
+}
+#taskAttachment {
+    .attachment {
+        label {
+            span {
+                display: inline-block;
+                width: 24px;
+                height: 24px;
+                margin-right: 5px;
+
+                line-height: 24px;
+
+                text-align: center;
+
+                color: #fff;
+                border-radius: 50%;
+                background: #004181;
+            }
+        }
+        h3 {
+            margin: 20px 0;
+        }
+        &__revision {
+            strong {
+                font-size: 18px;
+
+                color: #004181;
+            }
+            p {
+                margin-bottom: 20px;
+            }
+            label {
+                margin: 0;
+            }
+            ul {
+                margin-bottom: 20px;
+
+                li {
+                    display: inline-flex;
+                    padding: 3px 15px;
+
+                    border-radius: 25px;
+                    background: #f5f5f5;
+
+                    align-self: center;
+                }
+            }
+            .grid {
+                justify-content: space-between;
+            }
+            span.date {
+                display: inline-block;
+                height: 28px;
+
+                line-height: 28px;
+
+                color: #989494;
+            }
+            .dropdown-comments .btn-brand {
+                color: #222;
+                border: 0;
+                background: #ffff;
+                box-shadow: 0 2px 10px #ddd;
+
+                &.is-viewing {
+                    background: #ef7140;
+                }
+                i {
+                    color: #fff;
+                }
+                &:hover,
+                &:active,
+                &:focus {
+                    outline: none;
+                    i {
+                        color: #fff;
+                    }
+                }
+            }
+        }
+    }
+
+    .attachment-listing > li {
+        padding: 20px;
+
+        border-bottom: 1px solid #f5f3f3;
+
+        &:nth-child(odd) {
+            border-left: 7px solid #f5f4f4;
+            background: #fbfbfb;
+        }
+
+        &.is-active {
+            background: #e9f4fb;
+        }
+    }
+}
+
+
+.task-comment-list {
+    margin-top: 20px;
+    li {
+        padding: 10px;
+
+        border-bottom: 1px solid #f7f5f5;
+
+        .meta {
+            span {
+                color: #c1c0c0;
+            }
+        }
+        .photo {
+            max-width: 64px;
+            padding: 5px 10px;
+        }
+        p {
+            margin-top: 5px;
+        }
+
+        &:nth-child(odd) {
+            background: #fbfbfb;
+        }
+    }
+    .col {
+        &:first-child {
+            width: 200px;
+        }
+    }
+}
+
+
+.comment-wrapper {
+    padding-left: 15px;
+
+    box-shadow: none;
+
+    @include breakpoint(767) {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+
+        width: calc(100% - 20px) !important;
+        padding: 0;
+        margin: 0;
+
+        -webkit-transform: translate(-50%, -50%);
+                transform: translate(-50%, -50%);
+
+        box-shadow: none;
+        box-shadow: 0 2px 36px rgba(34, 34, 34, .8);
+    }
+    .single-comment {
+        padding: 10px;
+
+        img {
+            margin-right: 5px;
+        }
+        span {
+            color: #ccc;
+        }
+        p {
+            margin: 5px 0;
+        }
+        strong {
+            color: #222;
+        }
+
+        &:nth-child(odd) {
+            background-color: #f9f9f9;
+        }
+    }
+}
+
+
+#taskInfo .col {
+    @include breakpoint(992) {
+        width: 100% !important;
+
+        border-left: 0 !important;
+
+        &:last-child {
+            padding: 0 !important;
+        }
+    }
+}

@@ -1,0 +1,822 @@
+@extends('layouts.app')
+
+@section('content')
+
+  @if(Auth::user()->hasRole(['admin', 'super admin', 'SPG Internal User']))
+    <div class="panel panel-top">
+      <div class="row">
+        <div class="col-sm-6">
+          {!! Breadcrumbs::render('allOpenRepairs') !!} 
+        </div>
+        <div class="col-sm-6 text-right">
+          <a href="{{ url('repairs/create') }}"  class="btn-brand btn-brand-icon btn-brand-primary"><i class="fa fa-pencil btn-icon"></i><span>Create Repair</span></a>
+        </div>
+      </div>
+    </div> 
+  @endif
+  @if(Auth::user()->isAdmin())
+ 
+  <div class="advanced-search hide">
+      <div class="panel panel-default repair-tab top-search">
+      {{--  <div class="panel-header">
+                 <h3 class="heading">Advanced Search</h3>
+              </div> --}}
+        <div class="panel-body">
+          @if($repairs)
+            <button id="closeAdvanced"><span class="fa fa-close"></span></button>
+              {!! Form::open(['method' => 'GET', 'route' => 'advanced-search'])  !!}
+              <div class="row">
+                <div class="col-sm-12">
+                  <div class="filter">
+                    <label for="companyName">Company</label>
+                    <input type="text" name="company_name" placeholder="Company Name" />
+                  </div>
+                </div>
+                <div class="col-sm-12">
+                  <div class="filter">
+                    <label for="repairProduct">Product</label>
+                    @if($products)
+                       <select type="text" name="product">
+                         <option value="">Select Product</option>
+                         @foreach($products as $product)
+                                <option value="{{ $product->name }}">{{ $product->name }}</option>
+                           @endforeach
+                        </select>
+                      @endif
+                  </div>
+                </div>
+                <div class="col-sm-12">
+                  <div class="filter">
+                    <label for="repairProduct">Issue</label>
+                    @if($issues)
+                       <select type="text" name="issue">
+                         <option value="">Select issue</option>
+                         @foreach($issues as $issue)
+                                <option value="{{ $issue->name }}">{{ $issue->name }}</option>
+                           @endforeach
+                        </select>
+                      @endif
+                  </div>
+                </div>
+                <div class="col-sm-12">
+                  <div class="filter">
+                    <label for="repairStatus">Status</label>
+                    <select type="text" name="status">
+                        <option value="">Select Status</option>
+                        <option value="open">Open</option>
+                        <option value="Partially Shipped">Partially Shipped</option>
+                        <option value="Completely Shipped">Completely Shipped</option>
+                        <option value="received">Received</option>
+                        <option value="repaired">Repaired</option>
+                        <option value="returned">Returned</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-sm-12">
+                  <div class="filter">
+                      <button type="submit" class="btn-brand btn-brand-icon btn-brand-primary btn-brand-padding">Submit</button>
+                  </div>
+                </div>
+              </div>
+              {!! Form::close() !!}
+          @endif
+
+        </div>
+      </div>  
+    </div>
+   @endif 
+  <div class="row">
+    <div class="col-sm-12">
+    
+        <div class="panel panel-default panel-brand">
+          <div class="panel-heading">
+            <h3>All Repairs</h3>
+          </div>
+          <div class="panel-body">
+            <div class="table-nav row">
+              <div class="col-sm-9">
+                  <div class="row">
+                    <div class="col-sm-8">
+                      <label for="search" class="hide">Quick Search</label>
+                      <span><input type="text" id="search" name="search" class="form-control" placeholder="Quick Search.."></span>
+                    </div>
+                    <div class="col-sm-4"> 
+                        <ul class="list-inline">
+                          <li><button id="clearBtn" class="btn-brand btn-brand-icon btn-brand-danger"><span>Clear Search</span></button></li>
+                          <li><a href="#" id="advanced-search-button"  class="btn-brand btn-brand-icon btn-brand-primary"><i class="fa fa-filter"></i> <span>
+                     Advanced Search</span></a></li>
+                        </ul>  
+                     
+                    </div> 
+                  </div>
+                  
+              </div>
+              <div class="col-sm-3">
+                  <div class="float-right">
+                    <span>Show Results 
+                      <?php $items = [ 15,25, 50, 100 ]; ?>
+                      @if($items)
+                        <select id="totalItems">
+                           @foreach($items as $item)
+                              <option value="{{ $item }}" <?php echo ( $totalitems == $item ) ? 'selected="selected"' : ''; ?>>{{ $item }}</option> 
+                           @endforeach 
+                        </select>
+                      @endif
+                    </span>
+                </div>
+              </div>
+            </div>
+              <div class="table-responsive">
+                 <table class="table table-default-brand table-striped ">
+                    <thead>
+                     <tr>
+                         <th>RMA Number</th>
+                         <th>Company</th>
+                         <th>Product</th>
+                         <th>Issue</th>
+                         <th>Status</th>
+                         <th>Under Warranty</th>
+                         <th>Date Added</th>
+                         <th>Action</th>
+                     </tr>  
+                    </thead>
+                    <tbody>
+                    @if($repairs)
+                      <?php $count = 0; ?>
+                      @foreach ($repairs as $repair )
+
+
+                      <?php 
+                        $count++;
+                         if($repair->under_warranty) {
+                             $is_w = 'Yes' ;
+                         }
+                         else {
+                             $is_w = '';
+                         }
+                         $class = '';
+
+                         switch ($repair->status) {
+                           case 'open':
+                             $class = 'btn-default btn-open';
+                             break;
+
+                          case 'Partially Shipped':
+                             $class = 'btn-default btn-ps';
+                             break;
+                             
+                          case 'Completely Shipped':
+                             $class = 'btn-default btn-cs';
+                             break; 
+
+                            case 'received':
+                             $class = 'btn-default btn-r';
+                             break;
+                             
+                            case 'repaired':
+                             $class = 'btn-default btn-rp';
+                             break;  
+
+                            case 'returned':
+                             $class = 'btn-default btn-rt';
+                             break;  
+                           
+                           default:
+                             $class = '';
+                             break;
+                         }
+                     ?> 
+                   
+
+                     <tr>
+                         <td>{{ $repair->rma_no }}</td>
+                         <td>{{ $repair->company }}</td>
+                         <td>{{ $repair->product  }}</td>
+
+                         <td>{{ $repair->issue }}</td>
+                         <td><span class="{{ $class }}">{{ $repair->status }}</span></td>
+                         <td>{{ $is_w }}</td>
+                         <td>{{ date('F d, Y', strtotime($repair->created_at))  }}</td>
+                         <td>
+                            <a href="{{ route('repairs.show', $repair->id)}}">Show Info</a>
+                         </td> 
+                     </tr>
+
+
+                        @endforeach
+                      @endif  
+
+                   </tbody>
+
+                 </table>
+              </div>   
+                 @if($repairs)
+                 <div class="pagination-links">
+                    {{-- {{ $repairs->appends(['company_name' => '', 'product' => 'SE1-8120', 'issue' => '', 'status' => ''])->links() }} 
+                 </div>    --}}
+                 {{ $repairs->links() }}
+                 @endif   
+
+              
+          </div>
+      </div>    
+
+    </div>
+  </div>
+
+
+@endsection
+
+@section('css')
+<style>
+  .repair-tab {
+    min-height: auto;
+  }
+  .repair-tab .panel-header {
+      margin: 0;
+      padding: 10px 20px;
+      background: #2680d0;
+  }
+  .repair-tab .panel-header .heading {
+      font-size: 1.2em;
+      background: #2680d0;
+      border: 2px solid #2680d0;
+      color: #fff;
+      margin: 0;
+  }
+  .repair-tab.top-search {
+      background: #fff;
+      border-radius: 0;
+      border: 0;
+  }
+  select#totalItems {
+    padding: 5px;
+    border: 1px solid #ddd;
+    width: 50px;
+    height: 31px;  
+  }
+  input#search {
+      height: 35px;
+  }
+  #advancedSearch {
+      margin-top: 29px;
+      width: 100%;
+      height: 44px;
+  }
+   #advancedSearch i {
+     height: 45px;
+     line-height: 28px;
+   }
+   #advancedSearch span {
+      font-size: 17px;
+      height: 45px;
+      line-height: 45px;
+   }
+  .btn-default {
+    background: #f5f5f5;
+    padding: 5px;
+    line-height: 1;
+    border-radius: 4px;
+  }
+  .btn-open {
+      background: #fb9210;
+      color: #000;
+  }
+  .btn-ps {
+    background: #004181;
+    color: #fff;
+  }
+  .btn-cs {
+      background: #2ba01c;
+      color: #fff;
+  }
+  .btn-r {
+      background: #dc3030;
+      color: #fff;
+  }
+  .btn-rp {
+      background: #ebef1a;
+      color: #000;
+  }
+  .btn-rt {
+      background: #ae68d2;
+      color: #fff;
+  } 
+  .table-nav {
+    margin-bottom: 10px;
+  }
+  .advanced-search:focus {
+    outline: none;
+  }
+  .advanced-search label {
+    display: block;
+  }
+  .advanced-search input,
+  .advanced-search select {
+     margin: 5px 0 10px 0;
+  }
+  .advanced-search .panel-body {
+      padding: 10px 15px;
+  }
+  .repair-tab.top-search {
+    background: rgba(60, 58, 58, 0.7);
+    border-radius: 0;
+    border: 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+  }
+  .repair-tab.top-search  .panel-body {
+    max-width: 500px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 100;
+    background: #fff;
+    box-shadow: 0 9px 17px #4e4c4c;
+    padding: 40px 20px;
+  }
+  #closeAdvanced {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: transparent;
+    border: 0;
+    background: #fff;
+    border-radius: 50%;
+    padding: 10px;
+  }
+  #closeAdvanced:focus {
+    outline: none;
+  }
+  #clearBtn {
+    margin-bottom: 5px;
+    width: 120px;
+    padding: 0 5px;
+  }
+  #clearBtn span {
+    width: 100%;
+  }
+</style>
+@stop
+@section('js')
+
+    <script>
+       var status = '',
+           product = '',
+           value = '',
+           company = '';
+
+       //Product Change
+       $('#repairProduct').on('change', function(){
+           product = $(this).find('option:selected').text();
+
+           if(product == 'Select') {
+              product = '';
+           }
+       }); 
+
+       //Repair Status Change
+       $('#repairStatus').on('change', function(){
+           status = $(this).prop('selected', true).val();
+
+       }); 
+
+       $('#searchSubmit').on('click', function(e) {
+
+          e.preventDefault();
+
+          $('.pagination').hide();
+          
+          company = $('#companyName').val();
+
+            //SearchController
+            $.ajax({
+                 type : 'get',
+                 url  : '{{URL::to('searchRepair')}}',
+                 data: {
+                  'search' : '',
+                  'status' : status,
+                  'product' : product,
+                  'company' : company
+
+                },
+                 success: function(data) {
+                   console.log(data);
+
+                    $('tbody').html(data);
+                 }
+            });
+
+
+       });
+
+
+       $('#search').on('keyup', function(){
+
+            var value = $(this).val();
+            var items = $('#totalItems option:selected').val();
+            
+
+            $.ajax({
+                 type : 'get',
+                 url  : '{{URL::to('searchRepair')}}',
+                 data: {
+                  'search' : value,
+                  'items' : items,
+
+                },
+                 success: function(data) {
+                  console.log(data);
+
+                  var data = data;
+                  var total = data.length;
+                  var output = '';
+
+                  console.log(total);
+
+                  for(var x = 0; x < items; x++) {
+
+                     if( data[x]['under_warranty'] )  {
+                        var warranty = "<span class='fa fa-check'></span>";
+                     }
+                     else {
+                       var warranty = "";
+                     } 
+                     var status = statusColor(data[x]['status']);
+
+                    output +=  '<tr><td>' + data[x]['rma_no'] + '</td>'+
+                                      '<td>' + data[x]['company'] + '</td>'+ 
+                                      '<td>' + data[x]['product'] + '</td>'+
+                                      '<td>' + data[x]['issue'] + '</td>'+
+                                      '<td><span class="'+ status +'">' + data[x]['status'] + '</span></td>'+
+                                      '<td>' + warranty  + '</td>'+
+                                       '<td>' +  data[x]['created_at'] + '</td>'+
+                                      '<td><a href="'+ '/repairs' +'/'+ data[x]['id'] +'">show info</a></td></tr>';
+
+                  }
+                    var itemsLeft = '';
+
+                    if(total % items) {
+                      itemsLeft = Math.ceil( total / items) ;
+                    } else {
+                      itemsLeft = total / items;
+                    }
+
+                    console.log("pages : " + itemsLeft);
+                    console.log('items per page :' + items);
+
+                    var link = '<a href="#" class="btn-brand btn-next" id="'+ itemsLeft  +'">Next Page</a>';
+
+                    var paginate = '';
+                    if(itemsLeft > 0) {
+                        paginate += '<ul class="pagination pagination-ajax">';
+
+                        for(var a = 1; a <= itemsLeft; a++) {
+
+                            if( 1 === a ) {
+
+                              paginate += '<li class="active"><span id="'+ a +'" class="page-link">'+ a +'</span></li>';
+
+                            } else {
+
+                              paginate += '<li><a href="javascript:void(0)" id="'+ a +'" class="page-link">'+ a +'</a></li>';
+
+                            }
+
+                        }
+                        paginate += '</div>';
+                    }
+
+
+                    $('tbody').html(output);
+                    $('.pagination-links').html(paginate);
+                 }
+            });
+
+       });
+
+       $('.pagination-links').on('click', '.page-link', function(e){
+
+           e.preventDefault();
+
+           
+
+          var page_id  = $(this).attr('id');
+          var value = $('#search').val();
+          var items = $('#totalItems option:selected').val();
+          var output2 = '';
+
+            $.ajax({
+                 type : 'get',
+                 url  : '{{URL::to('searchRepair')}}',
+                 data: {
+                  'search' : value,
+                  'items' : items,
+
+                },
+                 success: function(data) {
+                  console.log(data);
+
+                  var data = data;
+                  var total = data.length;
+                  
+
+                  var start_page   = parseInt(items)  + 1;  
+
+                  var end_page = items * page_id;
+
+                  start_page = ( end_page - parseInt(items)   ) + 1;
+
+                   if( total < end_page ) {
+                      end_page = total;
+                   }
+
+
+                   if(page_id == 1)
+                   {
+                      start_page = 0;
+                      end_page = items;
+                   }
+
+                   console.log( " start page : " + start_page + "end_page" + end_page);
+                   console.log('items per page :' + items);
+
+                      for(var x = start_page; x < end_page; x++) {
+
+                        var warranty = ( data[x]['under_warranty'] ) ? '<span class="fa fa-check"></span>' : '';
+                        var status = statusColor(data[x]['status']);
+
+                        output2 +=  '<tr><td>' + data[x]['rma_no'] + '</td>'+
+                                          '<td>' + data[x]['company'] + '</td>'+ 
+                                          '<td>' + data[x]['product'] + '</td>'+
+                                          '<td>' + data[x]['issue'] + '</td>'+
+                                          '<td><span class="'+ status +'">' + data[x]['status'] + '</span></td>'+
+                                          '<td>' +  warranty + '</td>'+
+                                           '<td>' +  data[x]['created_at'] + '</td>'+
+                                          '<td><a href="'+ '/repairs' +'/'+ data[x]['id'] +'">show info</a></td></tr>';
+
+                      }
+
+                    var output_table = output2;
+                    var itemsLeft = '';
+
+                    if(total % items) {
+           
+                      itemsLeft = Math.ceil( total / items) ;
+
+                    } else {
+
+                      itemsLeft = total / items;
+
+                    }
+
+                    console.log("pages : " + itemsLeft);
+                    console.log('items per page :' + items);
+
+                    //var link = '<a href="#" class="btn-brand btn-next" id="'+ itemsLeft  +'">Next Page</a>';
+
+                    var paginate = '';
+                    if(itemsLeft > 0) {
+                        $('tbody').html('');
+                        paginate += '<ul class="pagination pagination-ajax">';
+
+                        for(var a = 1; a <= itemsLeft; a++) {
+
+                            if( page_id == a ) {
+
+                              paginate += '<li class="active"><span id="'+ a +'" class="page-link">'+ a +'</span></li>';
+
+                            } else {
+
+                              paginate += '<li><a href="javascript:void(0)" id="'+ a +'" class="page-link">'+ a +'</a></li>';
+
+                            }
+                            
+                        }
+                        paginate += '</div>';
+                    }
+
+
+
+                    $('tbody').html(output2);
+                    $('.pagination-links').html(paginate);
+                 }
+            });
+
+       });
+
+       $('#clearBtn').on('click', function(e){
+
+            // remove input value
+            $('#search').val('')
+
+            var value = '';
+            var items = $('#totalItems option:selected').val();
+            
+            $.ajax({
+                 type : 'get',
+                 url  : '{{URL::to('searchRepair')}}',
+                 data: {
+                  'search' : value,
+                  'items' : items,
+                  'list' : true
+
+                },
+                 success: function(data) {
+                  console.log(data);
+
+                  var data = data;
+                  var total = data.length;
+                  var output = '';
+
+
+                  for(var x = 0; x < items; x++) {
+
+                     if( data[x]['under_warranty'] )  {
+                        var warranty = "<span class='fa fa-check'></span>";
+                     }
+                     else {
+                       var warranty = "";
+                     } 
+                     var status = statusColor(data[x]['status']);
+                    output +=  '<tr><td>' + data[x]['rma_no'] + '</td>'+
+                                      '<td>' + data[x]['company'] + '</td>'+ 
+                                      '<td>' + data[x]['product'] + '</td>'+
+                                      '<td>' + data[x]['issue'] + '</td>'+
+                                      '<td><span class="'+ status +'">' + data[x]['status'] + '</span></td>'+
+                                      '<td>' + warranty  + '</td>'+
+                                       '<td>' +  data[x]['created_at'] + '</td>'+
+                                      '<td><a href="'+ '/repairs' +'/'+ data[x]['id'] +'">show info</a></td></tr>';
+
+                  }
+                    var itemsLeft = '';
+
+                    if(total % items) {
+                      itemsLeft = Math.ceil( total / items) ;
+                    } else {
+                      itemsLeft = total / items;
+                    }
+
+                    console.log("pages : " + itemsLeft);
+                    console.log('items per page :' + items);
+
+                    var link = '<a href="#" class="btn-brand btn-next" id="'+ itemsLeft  +'">Next Page</a>';
+
+                    var paginate = '';
+                    if(itemsLeft > 0) {
+                        paginate += '<ul class="pagination pagination-ajax">';
+
+                        for(var a = 1; a <= itemsLeft; a++) {
+
+                            if( 1 === a ) {
+
+                              paginate += '<li class="active"><span id="'+ a +'" class="page-link">'+ a +'</span></li>';
+
+                            } else {
+
+                              paginate += '<li><a href="javascript:void(0)" id="'+ a +'" class="page-link">'+ a +'</a></li>';
+
+                            }
+
+                        }
+                        paginate += '</div>';
+                    }
+
+
+                    $('tbody').html(output);
+                    $('.pagination-links').html(paginate);
+                 }
+            });
+       });
+
+      function showTotalResults() 
+      {
+         $('#totalItems').on('change', function(){
+            var totalItems = $(this).prop('selected', true).val();
+            var url        = '<?php echo url('repairs') ?>';
+
+            window.location.replace(url + '?' + 'items=' + totalItems );
+            
+
+         }); 
+
+       }
+
+       function toggleSearch() 
+       {
+          $('#advanced-search-button').on('click', function(e){
+
+            e.preventDefault();
+
+            $('.advanced-search').removeClass('hide').addClass('show');
+
+          });
+          $('#closeAdvanced').on('click', function(){
+              $('.advanced-search').removeClass('show').addClass('hide');
+          });
+ 
+       }
+      function statusColor(status) 
+      {
+       
+           switch (status) {
+               case "open":
+                 color = "btn-default btn-open";
+                 break;
+
+              case "Partially Shipped":
+                 color = "btn-default btn-ps";
+                 break;
+                 
+              case "Completely Shipped":
+                 color = "btn-default btn-cs";
+                 break; 
+
+                case "received":
+                 color = "btn-default btn-r";
+                 break;
+                 
+                case "repaired":
+                 color = "btn-default btn-rp";
+                 break;  
+
+                case "returned":
+                 color = "btn-default btn-rt";
+                 break;  
+                case "shipped":
+                 color = "btn-default btn-rt";
+                 break;  
+               
+               default:
+                 color = "";
+                 break;
+            }
+
+            return color;
+      }
+      function advancedSearch()
+       {
+        
+
+          $('#advancedSearch').on('click', function(e){
+
+            e.preventDefault();
+
+            var main_url = '<?php echo url('repairs') ?>';
+            var url = '<?php echo url('search/repairs') ?>';
+            var param = '';
+            var company = $('#companyName').val();
+
+            if(company) {
+                param = 'company=' + company;
+            }
+            if(product) {
+                param = 'product=' + product;
+            }
+            if(status) {
+               param = 'status=' + status;
+            }
+            // if(totalItems) {
+            //   param = 'items=' + totalItems;
+            // }
+
+            //product
+            if(product && status && !company) {
+              param = 'status=' + status + '&product=' + product;
+            }
+            if(product && !status && company) {
+              param = '&product=' + product + '&company=' + company;
+            }
+            //status 
+            if(!product && status && company) {
+              param = 'status=' + status + '&company=' + company;
+            }
+
+            if(product && status && company) {
+              param = 'status=' + status + '&product=' + product + '&company=' + company;
+            }
+            // if(product && status && company && totalItems) {
+            //   param = 'status=' + status + '&product=' + product + '&company=' + company + '&items=' + $totalitems;
+            // }
+            
+            if( product || status || company  ) {
+              window.location.replace(url + '?' + param);
+            } else {
+              window.location.replace(main_url);
+            }
+           
+          });
+
+       }
+       showTotalResults();
+       toggleSearch();
+       advancedSearch();
+
+    </script>
+@stop
+

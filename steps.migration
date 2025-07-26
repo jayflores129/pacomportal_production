@@ -1,0 +1,26 @@
+*company
+/migration/company
+
+*user
+/migration/user
+
+*rma_ticket
+/migration/rma_ticket
+
+*rma_ticket_faulties
+/migration/rma_ticket_faulties
+
+*user_companies
+/migration/user_companies
+
+*update_user_status
+/migration/update_user_status
+
+*update_rma_tickets_date
+/migration/update_rma_tickets_date
+
+*product_migration
+/migration/product
+
+* assign users
+/seed/change_user

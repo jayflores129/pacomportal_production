@@ -1,0 +1,27 @@
+#topSearchResults {
+    margin-top: 5px;
+    .item {
+        padding: 10px 0;
+
+        border-bottom: 1px solid #e6e5e5;
+    }
+
+    a {
+        float: right;
+    }
+    h3 {
+        margin-bottom: 0;
+
+        font-size: 18px;
+    }
+    .category {
+        display: inline-block;
+        padding: 2px 5px;
+        margin: 0;
+
+        text-transform: capitalize;
+
+        color: #fff;
+        background: #545454;
+    }
+}

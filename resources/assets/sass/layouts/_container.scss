@@ -1,0 +1,27 @@
+/* =============================
+ Container
+  ============================  */
+.container-fluid {
+    padding: 0 20px;
+    margin: 0 auto;
+
+    @include breakpoint(480) {
+        padding: 0 10px;
+    }
+}
+.grid {
+    display: flex;
+
+    flex-wrap: wrap;
+}
+#content {
+    padding: 0 20px;
+    margin: 0 auto;
+
+    @include breakpoint(480) {
+        padding: 0 10px;
+    }
+}
+.list-inline {
+    margin-left: 0;
+}

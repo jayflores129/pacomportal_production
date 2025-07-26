@@ -1,0 +1,149 @@
+<script>
+
+       $('.sortTable a').on('click', function(e){
+
+          console.log('test');
+
+            e.preventdefault();
+
+            //var link = $(this).attr('href');
+
+            //window.location.href = link;
+
+
+       });
+
+
+       $('#search').on('keyup', function(){
+            return
+      
+            var value     = $(this).val();
+            var link      = '{{ URL::to('admin/search-user') }}';
+
+            $('.sortTable').hide();
+
+            $.ajax({
+                 type : 'get',
+                 url  : link,
+                 data: {
+                  'search' : value
+                 },
+                 success: function(data) {
+
+                    console.log(data);
+                    var contacts         = data['contacts'];
+                    var total_items  = data['contacts'].length;
+                    var output       = '';
+
+                    if( value != '') {
+
+                          if( total_items > 0 ) {
+
+                              for(var x = 0; x < total_items; x++ ) {
+                    
+                                 output += listView(data['contacts'][x]);
+                              } 
+
+                          } else {
+
+                              output = '<tr><td colspan="5">No data found</td></tr>';
+
+                          }
+                        
+                          $('tbody').html(output);
+                          $('.pagination').hide();
+                
+                     }
+                     else {
+                          
+                          var total_items = data['contacts']['data'].length;
+                          if( total_items > 0 ) {
+
+                              $('.sortTable').show();
+
+                              for(var x = 0; x < total_items; x++ ) {
+                    
+                                 output += listView(data['contacts']['data'][x]);
+                              } 
+
+                          } else {
+
+                              output = '<tr><td colspan="5">No data found</td></tr>';
+
+                          }
+                        
+                          $('tbody').html(output);
+                          $('.pagination').show();
+
+                     }
+
+                }
+
+            });
+
+       });
+      
+      function listView( contact = [] ) {
+
+             var output           = '';
+             var id               = contact['id'];
+             var date             = contact['date'];
+             var fullname         = contact['firstname'] + ' ' + contact['lastname'];
+             var email            = contact['email'];
+             var company          = contact['company'];
+             var status           = contact['status'];
+             var blocked          = ( contact['blocked'] ) ? '<span class="label label-danger">Blocked User</span>': '';
+             var role             = contact['role'];
+             var link             = '{{ url('admin/subscriber/') }}/' + contact['id'];
+
+             var isApproved = ( contact['status'] ) ? '<label class="label label-primary" style="font-size: 13px;font-weight: normal;">Approved</label>':'';
+
+             var isDisapproved = ( !contact['status'] &&  contact['approval_status'] ) ? '<label class="label label-danger" style="font-size: 13px;font-weight: normal;">Disapproved</label>':'';
+
+
+
+             var view_url    = '{{ url('admin/users') }}' + '/' + id;
+             var view_block  = '{{ url('admin/user-confirm-delete') }}' + '/' + id;
+             var view_edit   = '{{ url('admin/users') }}' + '/' + id + '/edit';
+
+             var blocked_text  = ( contact['blocked'] ) ? 'Unblock': 'Block';
+             var blocked_bg    = ( contact['blocked'] ) ? 'info': 'danger';
+
+                output += '<tr>';
+                     output += '<td>' +  fullname + '</td>'
+                     output += '<td>' + email + '</td>';
+                     output += '<td>' +  company + '</td>';
+                     output += '<td>' +   role + '</td>';
+                     output += '<td>' +   isApproved + '' +  isDisapproved + '</td>';
+                     output += '<td>' +   blocked + '</td>';
+                     output += '<td>' +   date + '</td>';
+                     output += '<td>';
+                     output += '<ul class="list-inline">';
+
+                       output += '<li><a href="'+view_url+'" class="btn-brand btn-brand-icon btn-brand-success"><i class="fa fa-eye"></i><span>View</span></a></li>';
+
+                          output += '<li><a href="'+ view_edit +'" class="btn-brand btn-brand-icon btn-brand-primary"><i class="fa fa-pencil"></i><span>Edit</span></a></li>';
+
+                                          @if(Auth::user()->id != $user->id)
+
+                                output += '<li><a href="'+view_block+'" class="btn-brand btn-brand-icon btn-brand-'+blocked_bg+'"><i class="fa fa-trash"></i><span>'+blocked_text+'</span></a></li>';
+
+                                          @endif
+                                      output += '</ul>';
+                   output += '</tr>';
+
+
+            return output;
+       }
+    
+    (function($){
+
+         $('h3').on('click', function(e){
+
+            e.preventdefault();
+
+             //confirm('Deleting the user will also remove all tasks and tickets');
+                    
+         });
+    });
+ </script>
