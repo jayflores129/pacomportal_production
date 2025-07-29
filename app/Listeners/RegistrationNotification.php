@@ -38,11 +38,14 @@ class RegistrationNotification
 
         $admin_email = Option::where('key', 'notification_new_user_email')->value('value');
 
-        // Send email to Admin
-        Mail::to($admin_email)->send(new UserRegisteredNotification($user));
+        try {
+            // Send email to Admin
+            Mail::to($admin_email)->send(new UserRegisteredNotification($user));
 
-        // Send new user a welcome email 
-        Mail::to($user->email)->send(new WelcomeUser($user));
+            // Send new user a welcome email 
+            Mail::to($user->email)->send(new WelcomeUser($user));
+        }
+        catch (\Exception $e) {}
 
         if($user->no_notification == false ) {
             //User::where('email', $admin_email)->notify(new PendingApproval);

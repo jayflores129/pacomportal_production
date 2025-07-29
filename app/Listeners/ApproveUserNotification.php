@@ -32,7 +32,10 @@ class ApproveUserNotification
         
         $user = $event->user;
 
-        Mail::to($user->email)->send(new ApproveUser($user));
+        try {
+            Mail::to($user->email)->send(new ApproveUser($user));
+        }
+        catch (\Exception $e) {}
 
     }
 }

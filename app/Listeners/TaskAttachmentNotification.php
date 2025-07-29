@@ -30,6 +30,9 @@ class TaskAttachmentNotification
     {
         $user = $event->user;
 
-        Mail::to($user->email)->send( New TaskAttachmentMail($user) );
+        try {
+            Mail::to($user->email)->send( New TaskAttachmentMail($user) );
+        }
+        catch (\Exception $e) {}
     }
 }

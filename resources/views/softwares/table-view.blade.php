@@ -41,7 +41,7 @@
                                 <?php $photo = DB::table('user_details')->where('user_id', $ticket->assigned_to )->value('photo'); ?>
                                 @if( $photo )
                                   <div class="photo">
-                                    <img src="{{ asset('public/images/uploads/' . $photo ) }}"  width="100%" />
+                                    <img src="{{ asset('images/uploads/' . $photo ) }}"  width="100%" />
                                   </div>
                                 @else
                                   <div class="photo">

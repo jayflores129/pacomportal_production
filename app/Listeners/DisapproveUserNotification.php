@@ -31,6 +31,9 @@ class DisapproveUserNotification
     {
         $user = $event->user;
 
-        Mail::to($user->email)->send(new DisapproveUser($user));
+        try {
+            Mail::to($user->email)->send(new DisapproveUser($user));
+        }
+        catch (\Exception $e) {}
     }
 }

@@ -13,7 +13,7 @@
                         
                         <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
                             <div class="title m-b-md">
-                                <a href="{{ url('/') }}"><img src="{{ asset('public/images/pacom_logo.jpg') }}" width="300" /></a>
+                                <a href="{{ url('/') }}"><img src="{{ asset('images/pacom_logo.jpg') }}" width="300" /></a>
                              </div>
                             @if( $error)
                                 <p><span class="label label-<?php echo ($has_error == 1 ) ? 'danger' : 'success'; ?>">@php  echo $error;  @endphp</span></p>

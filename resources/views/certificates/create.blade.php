@@ -43,7 +43,7 @@
                 </table>
               </div>
           </div><!-- ./ End of Form -->
-          <div class="hide loading"><div><img src="{{ asset('public/images/loading.gif') }}" /></div></div>
+          <div class="hide loading"><div><img src="{{ asset('images/loading.gif') }}" /></div></div>
         @endcomponent
     </div>
   </div>

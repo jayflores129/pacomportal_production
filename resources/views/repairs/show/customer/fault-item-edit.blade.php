@@ -1,7 +1,7 @@
 <div class="edit-item-popup hide">
     <div class="popup-block">
         <div class="loading">
-            <div><img src="{{ asset('public/images/loading.gif') }}" /></div>
+            <div><img src="{{ asset('images/loading.gif') }}" /></div>
         </div>
         <div class="popup-heading"><span>Edit Item</span><button id="btn-close">x</button></div>
         <div class="popup-body">

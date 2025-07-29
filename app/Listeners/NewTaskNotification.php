@@ -37,18 +37,21 @@ class NewTaskNotification
 
         $admin_email = Option::where('key', 'notification_new_task_email')->value('value');
 
-        //For admin
-        $this->user->myRole = 'admin';
-        Mail::to($admin_email)
-              ->send(new NewTaskMail($this->user));
+        try {
+            //For admin
+            $this->user->myRole = 'admin';
+            Mail::to($admin_email)
+                ->send(new NewTaskMail($this->user));
 
-         $email = DB::table('users')->where('id', $this->user->assigned_to)->value('email');    
+            $email = DB::table('users')->where('id', $this->user->assigned_to)->value('email');    
 
-        //For Assignee  
-        $this->user->myRole = 'customer';    
-        Mail::to($email)
-              ->send(new NewTaskMail($this->user));      
+            //For Assignee  
+            $this->user->myRole = 'customer';    
+            Mail::to($email)
+                ->send(new NewTaskMail($this->user));      
 
-        User::find($this->user->assigned_to)->notify(new NewTaskNotify($this->user->id));
+            User::find($this->user->assigned_to)->notify(new NewTaskNotify($this->user->id));
+        }
+        catch (\Exception $e) {}
     }
 }

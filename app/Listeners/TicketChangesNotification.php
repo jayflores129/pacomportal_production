@@ -33,6 +33,9 @@ class TicketChangesNotification
         $user = $event->user;
 
 
-        Mail::to($user->email)->send( new TicketStatusMail($user) );
+        try {
+            Mail::to($user->email)->send( new TicketStatusMail($user) );
+        }
+        catch (\Exception $e) {}
     }
 }

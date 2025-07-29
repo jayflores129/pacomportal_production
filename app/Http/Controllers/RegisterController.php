@@ -13,6 +13,7 @@ use Mail;
 use App\Models\UserLogs;
 use App\Mail\PasswordHint;
 use App\Models\Option;
+use Exception;
 
 class RegisterController extends Controller
 {
@@ -113,7 +114,10 @@ class RegisterController extends Controller
                 $has_error = 0;
                 $name = DB::table('users')->where('email', $email )->value('firstname');
 
-                Mail::to( $email )->send( New PasswordHint($password_hint, $name) );
+                try {
+                    Mail::to( $email )->send( New PasswordHint($password_hint, $name) );
+                }
+                catch(\Exception $e) {}
             } else {
 
                 $error = 'Sorry, no password hint has been set for ' . $email  . '.';

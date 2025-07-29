@@ -32,7 +32,10 @@ class RepairStatusNotification
     {
         $user = $event->user;
 
-        Mail::to($user->email)->send( new RepairStatusMail($user) );
+        try {
+            Mail::to($user->email)->send( new RepairStatusMail($user) );
+        }
+        catch (\Exception $e) {}
            
     }
 }

@@ -33,20 +33,23 @@ class NewCommentNotification
     {
         $user = $event->user;
 
-        if( $user->not_assign == false ) {
+        try {
+            if( $user->not_assign == false ) {
 
-            //Send assignee a notification email
-            Mail::to($user->email)->send( New CommentNotification($user) );
+                //Send assignee a notification email
+                Mail::to($user->email)->send( New CommentNotification($user) );
 
-            //Notify assignee
-            User::find($user->id)->notify(new NewCommentTicket($user->ticket_id));
+                //Notify assignee
+                User::find($user->id)->notify(new NewCommentTicket($user->ticket_id));
 
+            }
+            else {
+
+                // Send email to company
+                Mail::to( $user->email )->send( New CommentNotification($user) );
+            }
         }
-        else {
-
-            // Send email to company
-            Mail::to( $user->email )->send( New CommentNotification($user) );
-        }
+        catch (\Exception $e) {}
 
         
 

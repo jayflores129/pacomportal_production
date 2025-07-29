@@ -3239,7 +3239,7 @@ class SoftwareController extends Controller
                 $photo = DB::table('user_details')->where('user_id', $comment->user_id)->value('photo');
 
                 if ($photo) {
-                    $output['data'][$count]['photo'] = asset('public/images/uploads/' . $photo);
+                    $output['data'][$count]['photo'] = asset('images/uploads/' . $photo);
                 } else {
                     $output['data'][$count]['$photo'] = asset('/public/images//user-placeholder.png');
                 }

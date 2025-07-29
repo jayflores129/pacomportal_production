@@ -33,10 +33,13 @@ class NewTaskCommentNotification
     {
         $user = $event->user;
 
-        //send notification email to the user
-        Mail::to($user->email)->send( New CommentTask($user) );
-    
-        // Add bell notification to the company
-        User::find($user->id)->notify(new TaskCommentNotification($user->ticket_id));
+        try {
+            //send notification email to the user
+            Mail::to($user->email)->send( New CommentTask($user) );
+        
+            // Add bell notification to the company
+            User::find($user->id)->notify(new TaskCommentNotification($user->ticket_id));
+        }
+        catch (\Exception $e) {}
     }
 }

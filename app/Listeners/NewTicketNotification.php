@@ -44,18 +44,24 @@ class NewTicketNotification
         //Mail::to(Auth::user()->email)->send(new NewRepairTicketMail($this->repair));
 
         // Email Admin about the new ticket
-        Mail::to($admin_email)->send(new RepairNotification($this->repair));
-        Mail::to('paulz@spgcontrols.com')->send(new RepairNotification($this->repair));
+        try {
+            Mail::to($admin_email)->send(new RepairNotification($this->repair));
+            Mail::to('paulz@spgcontrols.com')->send(new RepairNotification($this->repair));
 
-        // Send to Assignee
-        $assignee = User::find($this->repair->assign_id)->email;
-        Mail::to( $assignee )->send(new NewTicketCompanyEmail($this->repair));
+            // Send to Assignee
+            $assignee = User::find($this->repair->assign_id)->email;
+            Mail::to( $assignee )->send(new NewTicketCompanyEmail($this->repair));
+        }
+        catch (\Exception $e) {}
        
 
         $company_email = DB::table('companies')->where('name', 'LIKE', '%' .$this->repair->company . '%')->value('email');
         if($company_email) {
             // Notify Company
-            Mail::to($company_email)->send(new NewTicketCompanyEmail($this->repair));
+            try {
+                Mail::to($company_email)->send(new NewTicketCompanyEmail($this->repair));
+            }
+            catch (\Exception $e) {}
         }
 
     }

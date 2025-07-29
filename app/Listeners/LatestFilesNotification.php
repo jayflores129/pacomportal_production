@@ -43,14 +43,16 @@ class LatestFilesNotification
                 $firstname = $subscribe->firstname;
                  //Send assignee a notification email
 
-                if ($event->documentType == 'technical' && $subscribe->notify_technical_doc == 1) {
-                    Mail::to($subscribe->email)->send( New LatestFilesMail($files, $firstname) );
-                }
+                try {
+                    if ($event->documentType == 'technical' && $subscribe->notify_technical_doc == 1) {
+                        Mail::to($subscribe->email)->send( New LatestFilesMail($files, $firstname) );
+                    }
 
-                if ($event->documentType == 'software' && $subscribe->notify_firmware == 1) {
-                    Mail::to($subscribe->email)->send( New LatestFilesMail($files, $firstname) );
+                    if ($event->documentType == 'software' && $subscribe->notify_firmware == 1) {
+                        Mail::to($subscribe->email)->send( New LatestFilesMail($files, $firstname) );
+                    }
                 }
-
+                catch (\Exception $e) {}
             }
         }
 

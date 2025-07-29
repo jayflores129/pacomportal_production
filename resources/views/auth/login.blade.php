@@ -129,7 +129,7 @@
 
             <div class="login-form">
                 <div class="title m-b-md">
-                   <img src="{{ asset('public/images/pacom_logo.jpg') }}" width="100%" />
+                   <img src="{{ asset('images/pacom_logo.jpg') }}" width="100%" />
                 </div>
                 @if (Route::has('login'))
                     @if (Auth::check())

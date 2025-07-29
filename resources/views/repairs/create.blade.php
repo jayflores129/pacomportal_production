@@ -140,7 +140,7 @@
        
               <input type="hidden" name="status"  value="open" />
             
-               <div class="hide loading"><div><img src="{{ asset('public/images/loading.gif') }}" /></div></div>
+               <div class="hide loading"><div><img src="{{ asset('images/loading.gif') }}" /></div></div>
                 <button type="submit" id="submitRepair" class="hide btn-brand btn-brand-icon btn-brand-primary"><i class="fa fa-check"></i><span>Submit</span></button>
              </div>   
               

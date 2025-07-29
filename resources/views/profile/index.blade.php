@@ -68,11 +68,11 @@
                 <div class="profile-photo">
                       @if( !empty($photo) )
                         <div class="photo">
-                          <img src="{{ asset('public/images/uploads/' . $photo ) }}"  width="100%" />
+                          <img src="{{ asset('images/uploads/' . $photo ) }}"  width="100%" />
                         </div>
                       @else
                         <div class="photo">
-                          <img src="{{ asset('public/images/user-placeholder.png') }}" width="100%" />
+                          <img src="{{ asset('images/user-placeholder.png') }}" width="100%" />
                         </div>
                       @endif
                 </div>

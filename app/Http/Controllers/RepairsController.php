@@ -1090,12 +1090,12 @@ class RepairsController extends Controller
                 $log->created_by = Auth::user()->id;
                 $log->save();
 
-
-                Mail::to(Auth::user()->email)->send(new RepairNotification($repair));
-
-                //admin
-                Mail::to($this->repair_notification)->send(new RepairNotification($repair));
-
+                try {
+                    Mail::to(Auth::user()->email)->send(new RepairNotification($repair));
+                    //admin
+                    Mail::to($this->repair_notification)->send(new RepairNotification($repair));
+                }
+                catch (\Exception $e) {}
 
                 return Response('saved');
             } else {
@@ -1106,50 +1106,74 @@ class RepairsController extends Controller
 
     public function storeRMA(Request $request)
     {
-
-
         if ($request->ajax()) {
 
             if (Auth::user()) {
+                $req_company_id = $request->company_id ?? 0;
+                $req_notify = $request->notify ?? 0;
+                $req_assign_id = $request->user_id;
 
-                $assign_id      = $request->input('user_id');
+                $insert_rma_data = [
+                    'status' => 'Open',
+                    'added_by' => Auth::user()->id,
+                    'user_id' => $req_assign_id,
+                    'company_id' => $req_company_id,
+                    'notify' => $req_notify,
+                ];
 
-                $rma_ticket_id = DB::table('rma_tickets')->insertGetId([
-                    'requested_date'      => $request->input('date_requested'),
-                    'requester_name'      => $request->input('requester_name'),
-                    'requester_phone'      => $request->input('requester_phone'),
-                    'requester_company'   => $request->input('requester_company'),
-                    'requester_email'     => $request->input('requester_email'),
-                    'po_number'           => $request->input('po_number') ?? '',
-                    'requester_fax'       => $request->input('requester_fax') ?? '',
-                    'company_name'        => $request->input('company_name') ?? '',
-                    'company_phone'       => $request->input('company_phone') ?? '',
-                    'company_fax'         => $request->input('company_fax') ?? '',
-                    'company_address'     => $request->input('company_address') ?? '',
-                    'country'             => $request->input('country') ?? '',
-                    'currency'            => $request->input('currency') ?? '',
-                    'user_id'             => $assign_id,
-                    'company_id'          => $request->input('company_id') ?? 0,
-                    'status'              => 'Open',
-                    'notify'              => $request->input('notify') ?? 0,
-                    'added_by'             => Auth::user()->id
-                ]);
-
-                $repair = RmaTickets::find($rma_ticket_id);
-
-                if ($request->input('notify') == 1) {
-                    $requester_email = RmaTickets::where('id',$rma_ticket_id)->value('requester_email');
-                    Mail::to($requester_email)->send(new RepairNew($repair));
+                if ($request->date_requested) {
+                    $insert_rma_data['requested_date'] = $request->date_requested;
+                }
+                if ($request->requester_name) {
+                    $insert_rma_data['requester_name'] = $request->requester_name;
+                }
+                if ($request->requester_phone) {
+                    $insert_rma_data['requester_phone'] = $request->requester_phone;
+                }
+                if ($request->requester_company) {
+                    $insert_rma_data['requester_company'] = $request->requester_company;
+                }
+                if ($request->requester_email) {
+                    $insert_rma_data['requester_email'] = $request->requester_email;
+                }
+                if ($request->po_number) {
+                    $insert_rma_data['po_number'] = $request->po_number;
+                }
+                if ($request->requester_fax) {
+                    $insert_rma_data['requester_fax'] = $request->requester_fax;
+                }
+                if ($request->company_name) {
+                    $insert_rma_data['company_name'] = $request->company_name;
+                }
+                if ($request->company_phone) {
+                    $insert_rma_data['company_phone'] = $request->company_phone;
+                }
+                if ($request->company_fax) {
+                    $insert_rma_data['company_fax'] = $request->company_fax;
+                }
+                if ($request->company_address) {
+                    $insert_rma_data['company_address'] = $request->company_address;
+                }
+                if ($request->country) {
+                    $insert_rma_data['country'] = $request->country;
+                }
+                if ($request->currency) {
+                    $insert_rma_data['currency'] = $request->currency;
                 }
 
-                if ($rma_ticket_id) {
-                    $rma_faults = json_decode($request->input('items'));
+                $response_data = [
+                    'success' => true,
+                    'error' => null,
+                    'id' => null,
+                ];
 
-                    $item_faults = [];
+                if (!empty($insert_rma_data) && $rma_ticket_id = DB::table('rma_tickets')->insertGetId($insert_rma_data)) {
+                    $repair = RmaTickets::find($rma_ticket_id);
 
+                    $response_data['id'] = $rma_ticket_id;
+                    $rma_faults = json_decode($request->items);
 
                     foreach ($rma_faults as $fault) {
-
                         if ($fault->repair_cost == '' || $fault->repair_cost == null) {
                             $repair_cost = 0;
                         } else {
@@ -1181,43 +1205,19 @@ class RepairsController extends Controller
                     $rma_status->updated_by = Auth::user()->id;
                     $rma_status->rma_id = $rma_ticket_id;
                     $rma_status->save();
+
+                    try {
+                        if ($req_notify == 1) {
+                            $requester_email = RmaTickets::where('id',$rma_ticket_id)->value('requester_email');
+                            Mail::to($requester_email)->send(new RepairNew($repair));
+                        }
+                    }
+                    catch(\Exception $e) {
+                        $response_data['error'] = $e->getMessage();
+                    }
                 }
 
-
-                return response()->json([
-                    'success' => true,
-                    'id' => $rma_ticket_id
-                ]);
-
-
-
-                //event( new NewTicket($repair) );
-
-                /**
-                 *  Bell Notifications for assignee, company
-                 */
-                //User::find( $assign_id )->notify( new NewRepairNotify( $repair->id ) );
-
-
-                // $rma = $repair->id;
-                // $created_by = Auth::user()->id;
-
-                // //Log New repair in repair_log tbl
-                // $log = new RepairLog;
-                // $log->repair_id = $repair->id;
-                // $log->type = '<span class="box-bg bg-color-1">New repair created</span>'; 
-                // $log->description = 'Repair under ticket no #'. $rma  .' was created by SPG user with id no #<strong>'. $created_by .'</strong>';
-                // $log->old_value = '';
-                // $log->new_value = $rma;
-                // $log->action = 'new';
-                // $log->user_id = $created_by; 
-                // $log->created_by = $created_by; 
-                // $log->save();
-
-
-                // $request->session()->flash('alert-success', 'New Repair has been successfully added!');
-
-                // return Response('saved');
+                return response()->json($response_data);
 
             } else {
                 return Response('Not Authorized');
@@ -1259,7 +1259,9 @@ class RepairsController extends Controller
                 ]);
 
                 $repair = RmaTickets::find($rma_ticket_id);
-                Mail::to($this->repair_notification)->send(new RepairNew($repair));
+                try {
+                    Mail::to($this->repair_notification)->send(new RepairNew($repair));
+                } catch(\Exception $e) {}
 
                 if ($rma_ticket_id) {
                     $rma_faults = json_decode($request->input('items'));
@@ -1743,11 +1745,14 @@ class RepairsController extends Controller
             $emailCotent = new RepairChanges($repair, $fieldChanges);
 
             //Email if there are any changes
-            Mail::to($this->repair_notification)->send($emailCotent);
+            try {
+                Mail::to($this->repair_notification)->send($emailCotent);
 
-            if ($request->notify == 1) {
-                Mail::to($repair->requester_email)->send($emailCotent);
+                if ($request->notify == 1) {
+                    Mail::to($repair->requester_email)->send($emailCotent);
+                }
             }
+            catch(\Exception $e) {}
 
             if ($request->status == 'Received') {
                 $affected = DB::table('rma_items')->where('rma_id', '=', $id)->update(array('received_date' => date("Y-m-d")));
@@ -1872,13 +1877,16 @@ class RepairsController extends Controller
 
                 $email = $repair->requester_email;
                 session()->flash('alert-success', 'Ticket has been successfully updated!');
-                Mail::to($email)->send(
-                    new RepairQuotation(
-                        $repair, 
-                        "(PACOM) We received your items",
-                        $request->selectStatus
-                    )
-                );
+                try {
+                    Mail::to($email)->send(
+                        new RepairQuotation(
+                            $repair, 
+                            "(PACOM) We received your items",
+                            $request->selectStatus
+                        )
+                    );
+                }
+                catch(\Exception $e) {}
             } else if ($request->selectStatus == 'Shipped') {
                 $repair->cust_can_edit = 0;
                 $rma_status = new RmaStatus;
@@ -1890,13 +1898,16 @@ class RepairsController extends Controller
 
                 $email = $repair->requester_email;
                 session()->flash('alert-success', 'Ticket has been successfully updated!');
-                Mail::to($email)->send(
-                    new RepairQuotation(
-                        $repair, 
-                        "(PACOM) Items Shipped",
-                        $request->selectStatus
-                    )
-                );
+                try {
+                    Mail::to($email)->send(
+                        new RepairQuotation(
+                            $repair, 
+                            "(PACOM) Items Shipped",
+                            $request->selectStatus
+                        )
+                    );
+                }
+                catch(\Exception $e) {}
             }
              else if ($request->selectStatus == 'To Be Confirmed') {
                 $repair->has_quotation = 1;
@@ -1911,13 +1922,16 @@ class RepairsController extends Controller
 
                 $email = $repair->requester_email;
                 session()->flash('alert-success', 'Ticket has been successfully updated!');
-                Mail::to($email)->send(
-                    new RepairQuotation(
-                        $repair, 
-                        "To be Confirmed - New quotation for R{$repair->id}",
-                        $request->selectStatus
-                    )
-                );
+                try {
+                    Mail::to($email)->send(
+                        new RepairQuotation(
+                            $repair, 
+                            "To be Confirmed - New quotation for R{$repair->id}",
+                            $request->selectStatus
+                        )
+                    );
+                }
+                catch(\Exception $e) {}
             } else if ($request->selectStatus == 'Confirmed') {
                 $repair->has_confirmed = 1;
                 $userID = Auth::user()->id;
@@ -1933,14 +1947,17 @@ class RepairsController extends Controller
                 $rma_status->save();
 
                 session()->flash('alert-success', 'RMA quotation has been successfully confirmed!');
-                Mail::to($this->repair_notification)->send(
-                    new RepairQuotation(
-                        $repair, 
-                        "Cofirmed - Ticket R{$repair->id}",
-                        $request->selectStatus,
-                        $this->repair_notification,
-                    )
-                );
+                try {
+                    Mail::to($this->repair_notification)->send(
+                        new RepairQuotation(
+                            $repair, 
+                            "Cofirmed - Ticket R{$repair->id}",
+                            $request->selectStatus,
+                            $this->repair_notification,
+                        )
+                    );
+                }
+                catch (\Exception $e) {}
             } else if ($request->selectStatus == 'Submitted') {
                 $rma_status = new RmaStatus;
                 $rma_status->status = 'This repair was submitted on ' . date("Y-m-d");
@@ -1962,14 +1979,17 @@ class RepairsController extends Controller
 
                 $email = $repair->requester_email;
                 session()->flash('alert-success', 'Ticket has been successfully updated!');
-                Mail::to($this->repair_notification)->send(
-                    new RepairQuotation(
-                        $repair, 
-                        "Completed - Repair has been Completed for R{$repair->id}",
-                        $request->selectStatus,
-                        $this->repair_notification,
-                    )
-                );
+                try {
+                    Mail::to($this->repair_notification)->send(
+                        new RepairQuotation(
+                            $repair, 
+                            "Completed - Repair has been Completed for R{$repair->id}",
+                            $request->selectStatus,
+                            $this->repair_notification,
+                        )
+                    );
+                }
+                catch(\Exception $e) {}
             } else if ($request->selectStatus == 'Cancelled') {
                 $rma_status = new RmaStatus;
                 $rma_status->status = 'This repair was cancelled on ' . date("Y-m-d");
@@ -1981,14 +2001,17 @@ class RepairsController extends Controller
                 $email = $repair->requester_email;
                 session()->flash('alert-success', 'Ticket has been successfully updated!');
                 //Mail::to($email)->send(new RepairQuotation($repair));
-                Mail::to($this->repair_notification)->send(
-                    new RepairQuotation(
-                        $repair, 
-                        "Cancelled - Repair has been Cancelled for R{$repair->id}",
-                        $request->selectStatus,
-                        $this->repair_notification
-                    )
-                );
+                try {
+                    Mail::to($this->repair_notification)->send(
+                        new RepairQuotation(
+                            $repair, 
+                            "Cancelled - Repair has been Cancelled for R{$repair->id}",
+                            $request->selectStatus,
+                            $this->repair_notification
+                        )
+                    );
+                }
+                catch(\Exception $e) {}
             } else {
                 session()->flash('alert-success', 'Ticket has been successfully updated!');
             }
@@ -1998,14 +2021,17 @@ class RepairsController extends Controller
                 $repair->id = $repair->id;
                 $repair->email = $this->repair_notification;
                 $repair->firstname = User::where('email', $this->repair_notification)->value('firstname');
-                Mail::to($this->repair_notification)->send(
-                    new RepairQuotation(
-                        $repair,
-                        "To be confirmed - New quotation for R{$repair->id}",
-                        $request->selectStatus,
-                        $this->repair_notification
-                    )
-                );
+                try {
+                    Mail::to($this->repair_notification)->send(
+                        new RepairQuotation(
+                            $repair,
+                            "To be confirmed - New quotation for R{$repair->id}",
+                            $request->selectStatus,
+                            $this->repair_notification
+                        )
+                    );
+                }
+                catch(\Exception $e) {}
             }
 
             $log_creator = Auth::user()->firstname . ' ' . Auth::user()->lastname;
@@ -2184,17 +2210,20 @@ class RepairsController extends Controller
 
                 $rma_ticket = RmaTickets::find($rma_id);
 
-                if ($request->isCustomer ==  'yes') {
-                    $requester_email = RmaTickets::where('id', $rma_id)->value('requester_email');
-                    Mail::to($this->repair_notification)->send(new RepairItemAdded($rmaItem));
-                } else {
-                    $requester_email = RmaTickets::where('id', $rma_id)->value('requester_email');
-                    //Mail::to($requester_email)->send(new RepairItemAdded($rmaItem));
-                }
+                try {
+                    if ($request->isCustomer ==  'yes') {
+                        $requester_email = RmaTickets::where('id', $rma_id)->value('requester_email');
+                        Mail::to($this->repair_notification)->send(new RepairItemAdded($rmaItem));
+                    } else {
+                        $requester_email = RmaTickets::where('id', $rma_id)->value('requester_email');
+                        //Mail::to($requester_email)->send(new RepairItemAdded($rmaItem));
+                    }
 
-                $this->sendNotifiedRequesterEmail($rma_id, function () use ($rma_ticket, $rmaItem) {
-                    Mail::to($rma_ticket->requester_email)->send(new RepairItemAdded($rmaItem));
-                });
+                    $this->sendNotifiedRequesterEmail($rma_id, function () use ($rma_ticket, $rmaItem) {
+                        Mail::to($rma_ticket->requester_email)->send(new RepairItemAdded($rmaItem));
+                    });
+                }
+                catch (\Exception $e) {}
 
                 session()->flash('alert-success', 'Fault item has been successfully added!');
 
@@ -2654,9 +2683,12 @@ class RepairsController extends Controller
 
         $emailContent = new RepairItemChanges($rma_id_input, $fieldChanges, $requester_name);
 
-        $this->sendNotifiedRequesterEmail($request->rma_id, function () use ($requester_email, $emailContent) {
-            Mail::to($requester_email)->send($emailContent);
-        });
+        try {
+            $this->sendNotifiedRequesterEmail($request->rma_id, function () use ($requester_email, $emailContent) {
+                Mail::to($requester_email)->send($emailContent);
+            });
+        }
+        catch(\Exception $e) {}
 
         session()->flash('alert-success', 'Fault item has been successfully updated!');
 
@@ -2844,7 +2876,11 @@ class RepairsController extends Controller
         $item->faults = $item->faults;
         $requester_name = RmaTickets::where('id', $rma_id_input)->value('requester_name');
         $requester_email = RmaTickets::where('id', $rma_id_input)->value('requester_email');
-        Mail::to($this->repair_notification)->send(new RepairItemChanges($rma_id_input, $fieldChanges, 'Admin'));
+        
+        try {
+            Mail::to($this->repair_notification)->send(new RepairItemChanges($rma_id_input, $fieldChanges, 'Admin'));
+        }
+        catch(\Exception $e) {}
 
         session()->flash('alert-success', 'Fault item has been successfully updated!');
 
@@ -2873,9 +2909,12 @@ class RepairsController extends Controller
             $requester_email = RmaTickets::where('id', $rma_id)->value('requester_email');
             //Mail::to($requester_email)->send(new RepairItemDeleted($faulty_item));
 
-            $this->sendNotifiedRequesterEmail($request->rma_id, function () use ($requester_email, $faulty_item) {
-                Mail::to($requester_email)->send(new RepairItemDeleted($faulty_item));
-            });
+            try {
+                $this->sendNotifiedRequesterEmail($request->rma_id, function () use ($requester_email, $faulty_item) {
+                    Mail::to($requester_email)->send(new RepairItemDeleted($faulty_item));
+                });
+            }
+            catch (\Exception $e) {}
 
             RmaItems::destroy($id);
 

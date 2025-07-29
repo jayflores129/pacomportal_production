@@ -7,7 +7,7 @@
     <title>{{ config('app.name', 'Pacom') }}</title>
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <link rel="shortcut icon" href="{{ asset('public/images/favicon.png') }}" />
+    <link rel="shortcut icon" href="{{ asset('images/favicon.png') }}" />
 
     <title>{{ config('app.name', 'Pacom') }}</title>
 
@@ -74,7 +74,7 @@ src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit
                   </div>
                   <!-- Branding Image -->
                   <a class="site-logo" href="{{ url('/home') }}">
-                      <img src="{{ asset('public/images/pacom_logo.jpg') }}" width="100" />
+                      <img src="{{ asset('images/pacom_logo.jpg') }}" width="100" />
                   </a>
                   <ul class="top-menu">
                      <li><a href="https://pacom.com/home"><i class="fa fa-home"></i> <span>Homepage</span></a></li>
@@ -135,11 +135,11 @@ src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit
                                 <?php $photo = DB::table('user_details')->where('user_id', Auth::user()->id )->value('photo'); ?>
                                     @if( $photo )
                                       
-                                        <img src="{{ asset('public/images/uploads/' . $photo ) }}"  width="24" />
+                                        <img src="{{ asset('images/uploads/' . $photo ) }}"  width="24" />
                                     
                                     @else
                                      
-                                        <img src="{{ asset('public/images//user-placeholder.png') }}" width="24" />
+                                        <img src="{{ asset('images//user-placeholder.png') }}" width="24" />
                                    
                                     @endif
                                     <span class="caret"></span>
@@ -358,16 +358,23 @@ src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit
     </script>
     <script src="https://cdn.ckeditor.com/ckeditor5/35.1.0/classic/ckeditor.js"></script>
     <script>
-        ClassicEditor
-            .create(document.querySelector('#consignment_note'))
-            .catch(error => {
-                console.error(error);
-            });
+        const consignment_note_el = document.querySelector('#consignment_note');
+        if (consignment_note_el) {
             ClassicEditor
-            .create(document.querySelector('#RmaComment'))
-            .catch(error => {
-                console.error(error);
-            });
+              .create(document.querySelector('#consignment_note'))
+              .catch(error => {
+                  console.error(error);
+              });
+        }
+        
+           const RmaComment_el = document.querySelector('#RmaComment');
+        if (RmaComment_el) {
+          ClassicEditor
+              .create(document.querySelector('#consignment_note'))
+              .catch(error => {
+                  console.error(error);
+              });
+        }
              
               if (location.pathname != '/repairs') {
                 if (!location.pathname.includes('repairs'))

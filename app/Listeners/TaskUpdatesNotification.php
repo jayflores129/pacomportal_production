@@ -36,9 +36,12 @@ class TaskUpdatesNotification
 
         $user = $event->user;
 
-        Mail::to($user->email)->send(new TaskUpdatesMail($user));
-        Mail::to($admin_email)->send(new TaskUpdatesMail($user));
-        Mail::to( $user->submitter )->send(new TaskUpdatesMail($user));
+        try {
+            Mail::to($user->email)->send(new TaskUpdatesMail($user));
+            Mail::to($admin_email)->send(new TaskUpdatesMail($user));
+            Mail::to( $user->submitter )->send(new TaskUpdatesMail($user));
+        }
+        catch (\Exception $e) {}
     }
 
 }

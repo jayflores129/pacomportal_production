@@ -45,7 +45,10 @@ class CommentController extends Controller
         $comment->requester_name = RmaTickets::where('id', $request->rma_id)->value('requester_name');
 
         $this->sendNotifiedRequesterEmail($request->rma_id, function() use ($requester_email, $comment) {
-            Mail::to($requester_email)->send(new RepairComment($comment));
+            try {
+                Mail::to($requester_email)->send(new RepairComment($comment));
+            }
+            catch(\Exception $e) {}
           });
 
         $request->session()->flash('alert-success', 'Comment has been successfully added!');
