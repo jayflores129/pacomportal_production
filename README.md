@@ -1,7 +1,7 @@
 <p  align="center"><a  href="https://support.pacom.com"  target="_blank"><img  src="https://pacom.com/wp-content/uploads/2024/08/PACOM_Main-Black_-Blue-1.svg"  width="400"  alt="Pacom Portal"></a></p>
 
 ## Pacom Portal
-A laravel-based web application developed for internal use.
+A Laravel-based web application developed for internal use.
 
 
 ### Requirements
@@ -43,12 +43,12 @@ code .
 Create database in Laragon and name it `pacom_db`
 
 ```bash 
-	# Update database credentials in ".env" file
-	DB_CONNECTION=mysql
-	DB_HOST=127.0.0.1
-	DB_DATABASE=pacom_db
-	DB_USERNAME=root
-	DB_PASSWORD=
+# Update database credentials in ".env" file
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_DATABASE=pacom_db
+DB_USERNAME=root
+DB_PASSWORD=
 ```
 ### Serve the App
 
