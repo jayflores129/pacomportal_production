@@ -106,7 +106,7 @@
                         <div class="form-group row">
                           <label for="date-requested" class="col-sm-3 col-form-label">Date Requested <span class="text text-danger">*</span><br></label>
                           <div class="col-sm-9">
-                            <input type="date" class="form-control-date" name="date-requested" id="date-requested" value="<?php echo date("Y-m-d");?>" required>
+                            <input type="date" class="form-control-date" name="date-requested" id="date-requested" required>
                           </div>
                         </div>
 
