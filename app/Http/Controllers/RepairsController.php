@@ -84,7 +84,7 @@ class RepairsController extends Controller
 
         if ($request->order_by && $sort_direction = $request->sort_direction) {
             if ($request->order_by === 'requested_date')
-                $rmaTicket->orderBy(DB::raw("STR_TO_DATE(requested_date, '%d/%m/%Y')"), $sort_direction);
+            $rmaTicket->orderBy(DB::raw("STR_TO_DATE(requested_date, '%Y-%m-%d')"), $sort_direction);
             else
                 $rmaTicket->orderBy($request->order_by, $sort_direction);
         } else $rmaTicket->orderBy('id', 'desc');

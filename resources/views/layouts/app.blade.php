@@ -37,9 +37,9 @@
       ul.vertical-menu > li.active > a {
           pointer-events: none;
       }
-      li.menu-item.parent-item.active.show-submenu ul {
+      /* li.menu-item.parent-item.active.show-submenu ul {
           display: block !important;
-      }
+      } */
      .form-control, input[type=email], input[type=password], input[type=text], select, select[type=text],select[type='date'], textarea {
           width: 100%;
           height: 38px;
@@ -381,6 +381,29 @@ src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit
                   localStorage.removeItem('RmaIDs');
               }
               
+
+      const sidebar2 = document.querySelector('.sidebar');
+      const innerContent2 = document.querySelector('.inner-content')
+      const verticalMenu2 = document.querySelectorAll('.vertical-menu-2')
+
+      let isOpenSidebar = true;
+
+      document.getElementById('toggle-menu-2').addEventListener('click', () => {
+        isOpenSidebar = !isOpenSidebar;
+
+        if (!isOpenSidebar) {
+          sidebar2.style.width = '55px';
+          innerContent2.style.marginLeft = '40px';
+        } else {
+          sidebar2.removeAttribute('style');
+          innerContent2.removeAttribute('style');
+        }
+
+        Array.from(verticalMenu2).forEach((elem) => {
+          if (!isOpenSidebar) elem.classList.add('minified');
+          else elem.classList.remove('minified');
+          });
+      })
     </script>
     </script>
     <script type="text/javascript">

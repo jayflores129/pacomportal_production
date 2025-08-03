@@ -1,8 +1,8 @@
 @if(Auth::user())
 
-  <h4 class="heading-2"><span class="inner">Menu</span>  <button id="toggle-menu-2"><span class="fa fa-bars"></span></button></h4>
+  <h4 class="heading"><span class="inner">Menu</span>  <button id="toggle-menu"><span class="fa fa-bars"></span></button></h4>
     
-  <ul class="vertical-menu-2">
+  <ul class="vertical-menu">
       <li class="menu-item {{ Request::path() == 'home' ? 'active show-submenu' : '' }}">
          <a href="{{ url('/home') }}">
             <i class="fa fa-home fa-lg"></i>
@@ -59,7 +59,7 @@
  @endif
  @if(Auth::user() && Auth::user()->hasRole('admin'))
     <h4 class="heading"><span class="inner">Settings</span> </h4>
-    <ul class="vertical-menu-2">
+    <ul class="vertical-menu">
         <li class="menu-item parent-item {{ Request::path() == 'admin/users' ? 'active show-submenu' : '' }}">
           <a href="{{ url('admin/users') }}"><i class="fa fa-key fa-lg"></i> <span>Manage Users</span>  <i class="fa fa-chevron-left menu-dropdown-icon"></i></a>
 
@@ -133,7 +133,7 @@
  @elseif( Auth::user() && Auth::user()->hasRole('customer') )  
     <?php $id = Auth::user()->id; ?>
     <h4 class="heading"><span class="inner">Settings</span> </h4>
-    <ul class="vertical-menu-2">
+    <ul class="vertical-menu">
         <li class="menu-item parent-item {{ Request::path() == 'admin/customers' ? 'active' : '' }}">
           <a href="{{ url('/profile/') }}"><i class="fa fa-user fa-lg"></i> <span>Your profile</span>  <i class="fa fa-chevron-left menu-dropdown-icon"></i></a>
           <ul class="sub-menu">
@@ -147,172 +147,4 @@
  @endif   
 
 
- <style>
-  .heading-2 {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
 
-  .heading-2 button {
-    background: transparent;
-    border: 0;
-    padding: 4px;
-    line-height: 0;
-    padding-inline: 7px;
-  }
-
-  .heading-2 button:hover {
-    color: #1d6fb8;
-  }
-
-  .vertical-menu-2 {
-    margin-bottom: 18px;
-  }
-
-  .vertical-menu-2, 
-  .vertical-menu-2 .sub-menu {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    gap: 3px;
-  }
-
-  .vertical-menu-2 .sub-menu {
-    display: flex !important;
-  }
-
-  .vertical-menu-2 .sub-menu {
-    padding-left: 10px;
-    margin-top: 4px;
-  } 
-
-  .vertical-menu-2 > li {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .vertical-menu-2 .menu-item a {
-    display: flex;
-    padding-block: 8px;
-    padding-inline: 10px;
-    align-items: center;
-    border-radius: 6px;
-  }
-
-  .vertical-menu-2 > li a {
-    display: flex;
-    gap: 14px;
-  }
-
-  .vertical-menu-2 li a {
-    color: #0a5584;
-    font-weight: bold;
-    font-size: 15px;
-  }
-  
-
-  .vertical-menu-2 .sub-menu li a {
-    width: 100%;
-    margin-bottom: 0;
-    background-color: #fff;
-  }
-
-  .vertical-menu-2 .menu-item .sub-menu {
-    height: 0px;
-    transition: height 300ms ease-in-out;
-    margin-top: 0;
-    overflow: hidden;
-    padding-top: 3px;
-  }
-
-  .menu-dropdown-icon {
-    transition: transform 300ms ease-in-out;
-  }
-
-  .vertical-menu-2 .menu-item.active > a,
-  .vertical-menu-2 li a:hover {
-    background-color: #1d6fb8;
-    color: #fff;
-  }
-
-  .vertical-menu-2 .menu-item.active a > i:last-child {
-    transform: rotate(-90deg);
-  }
-
-  .vertical-menu-2 li a i:first-child {
-    color: #c2c6ca;
-    font-size: 15px;
-  }
-
-  .vertical-menu-2 > li a i:last-child {
-    margin-left: auto;
-  }
-  
-  .vertical-menu-2 .sub-menu li {
-    display: flex;
-    width: 100%;
-  }  
-
-  .vertical-menu-2 .sub-menu li > a {
-    height: 36px;
-  }
-
-  .vertical-menu-2.minified a span, 
-  .vertical-menu-2.minified a i:last-child, 
-  .vertical-menu-2.minified .sub-menu {
-    display: none !important;
-  }
-
-  .vertical-menu-2.minified .menu-item > a {
-    display: flex;
-    justify-content: center;
-    height: 38px;
-  }
-
-  .vertical-menu-2.minified .menu-item > a i {
-    font-size: 20px;
-  }
-  
-    .vertical-menu-2.minified .menu-item > a i:hover,
-    .vertical-menu-2.minified .menu-item.active > a i{
-      color: #fff;
-    }
-  </style>
-
- <script>
-  const menuParents = document.querySelectorAll('.menu-item.parent-item')
- 
-  if (menuParents) {
-    menuParents.forEach((elem) => {
-      let open = elem.classList?.contains("show-submenu")
-      const listsEl = elem.querySelectorAll('ul.sub-menu li')
-      const subMenuEl = elem.querySelector('ul.sub-menu')
-      const chevronIconEl = elem.querySelector('a > i:last-child')
-
-      const heightFull = (listsEl?.length * 36) + 9 + 'px';
-      let toggleIsOpen = false;
-
-      if (open && subMenuEl) {
-        toggleIsOpen = true;
-        subMenuEl.style.height = heightFull;
-      }
-
-      elem.querySelector('a').addEventListener('click', (e) => {
-        e.preventDefault();
-        toggleIsOpen = !toggleIsOpen;
-        
-        if (toggleIsOpen) {
-          subMenuEl.style.height = heightFull;
-          chevronIconEl.style.transform = 'rotate(-90deg)';
-          elem.classList.add('active')
-        }
-        else {
-          subMenuEl.style.height = '0px';
-          chevronIconEl.style.transform = 'rotate(0deg)';
-          elem.classList.remove('active')
-        }
-      })
-    })
-  }
- </script>
