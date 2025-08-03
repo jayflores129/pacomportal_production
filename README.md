@@ -33,6 +33,7 @@ composer install
 
 # Copy .env.example and generate app key
 cp .env.example .env
+php artisan key:generate
 
 # Open the project in VS Code
 code .
