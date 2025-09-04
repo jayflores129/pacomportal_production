@@ -47,7 +47,7 @@
                                  {{  ($file->type == 1 || $file->type == 2) ? $file->categoryName->name : '' }}
                               </td>
                               <td>
-                                 {{ ($file->type == 1 || $file->type == 2) ? $file->releaseName->name : '' }}
+                                 {{ ($file->type == 1 || $file->type == 2) ? optional($file->releaseName)->name : '' }}
                               </td>
                               <td>
                                  {{ $file->version }}

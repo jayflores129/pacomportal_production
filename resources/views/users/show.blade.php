@@ -87,7 +87,7 @@
                   <div class="col" style="width: 100%;max-width:300px; margin-right: 5px;">
 
                       <select name="company" style="height: 33px;">
-
+                        <option value="">-- No company selected --</option>
                         @foreach( $companies as $row )
 
                             <option value="{{ $row->id }}">{{ $row->name }}</option>
@@ -116,7 +116,7 @@
                 <div class="col" style="width: 100%;max-width: 300px; margin-right: 5px;">
 
                       <select name="company" style="height: 33px;">
-
+                        <option value="">-- No company selected --</option>
                         @foreach( $allCompanies as $row )
 
                             <option value="{{ $row->id }}">{{ $row->name }}</option>

@@ -155,6 +155,7 @@
                                     <?php
                                     // $role_id = DB::table('role_user')->where('user_id', $user->id)->value('role_id');
                                     // $role_name = DB::table('roles')->where('id', $role_id )->value('name');
+                                    $company = DB::table('companies')->where('id', $user->company_id)->first();
                                     ?>
 
                                     <tr>
@@ -162,7 +163,7 @@
 
                                         <td>{{ $user->email }}</td>
 
-                                        <td>{{ $user->company }}</td>
+                                        <td>{{ $company->name ?? '-' }}</td>
 
                                         <td class="text-capitalize">{{ $user->getUserRole() }}</td>
 
