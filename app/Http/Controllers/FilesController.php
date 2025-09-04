@@ -406,7 +406,7 @@ class FilesController extends Controller
 
     }
 
-    public function download( $id )
+    public function download($id)
     {
         if (Auth::user())
         {
@@ -460,8 +460,6 @@ class FilesController extends Controller
             header('Content-Length: ' . filesize($path));
             readfile($path);
             exit;
-
-        //    return response()->download($path);
 
         }
         else {

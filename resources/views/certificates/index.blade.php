@@ -48,7 +48,7 @@
                           ?>
                        <td>
                        
-                        <strong>{{ $file->name }}  
+                        <strong>{{ empty($file->name) ? $file->filename : $file->name }}  
                             @if(Auth::user()->isAdmin()) 
                              <a href="{{ URL::to('/certificates/edit-name', ['id' => $file->id] ) }}" class="sm-text">Edit</a>
                              @endif 
@@ -60,7 +60,7 @@
                        <td>
                             <ul class="list-inline">
                                   <li><a href="{{ route('files.show', $file->id)}}" class="btn-brand btn-brand-icon btn-brand-primary"><i class="fa fa-eye btn-icon"></i><span>View</span></a></li>
-                                  <li><a href="{{ URL::to('/download/' . $file->id ) }}" target="_blank" download class="btn-brand btn-brand-icon btn-brand-success downloadable-cert"><i class="fa fa-download btn-icon"></i><span>Download</span></a></li>
+                                  <li><a href="{{ URL::to('/download/' . $file->id ) }}" target="_blank" class="btn-brand btn-brand-icon btn-brand-success"><i class="fa fa-download btn-icon"></i><span>Download</span></a></li>
                                   @if(Auth::user()->isAdmin())
                                     <li>{!! Form::open([ 'method' => 'delete','route' => ['files.destroy', $file->id] ]) !!}
                                         <button type="submit" class="btn-brand btn-brand-danger btn-brand-icon"><i class="btn-icon fa fa-close"></i> <span>Delete</span></button>

@@ -86,12 +86,12 @@
                             <td><?php $document = DB::table('documents')->where('file_id', $item->id)->value('name');  ?>
                             <ul class="list-inline">
                               @if( $item->filelink )
-                                <li><a href="{{ $item->filename }}" target="_blank" class="btn-brand btn-brand-success btn-brand-icon downloadable-file" download="{{ $item->filename }}"><i class="fa fa-download"></i><span>Download</span></a></li>
+                                <li><a href="{{ $item->filename }}" target="_blank" class="btn-brand btn-brand-success btn-brand-icon" download="{{ $item->filename }}"><i class="fa fa-download"></i><span>Download</span></a></li>
                               @else
-                                <li><a href="{{ URL::to('/download/' . $item->id ) }}" target="_blank" class="btn-brand btn-brand-success btn-brand-icon downloadable-file" download="{{ $item->filename }}"><i class="fa fa-download"></i><span>Download</span></a></li>
+                                <li><a href="{{ URL::to('/download/' . $item->id ) }}" target="_blank" class="btn-brand btn-brand-success btn-brand-icon"><i class="fa fa-download"></i><span>Download</span></a></li>
                               @endif
                               
-                              <li><a href="{{ URL::to('/download-document/' . $document ) }}" target="_blank" class="btn-brand btn-brand-success btn-brand-icon downloadable-document" download><i class="fa fa-file-text-o"></i><span>Document</span></a></li>
+                              {{-- <li><a href="{{ URL::to('/download-document/' . $document ) }}" target="_blank" class="btn-brand btn-brand-success btn-brand-icon downloadable-document" download><i class="fa fa-file-text-o"></i><span>Document</span></a></li> --}}
                               @if( Auth::user()->isAdmin() )
                                 <li>{!! Form::open([
                                    'method' => 'delete',

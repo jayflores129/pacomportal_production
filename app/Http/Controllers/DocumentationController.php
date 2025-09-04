@@ -313,14 +313,30 @@ class DocumentationController extends Controller
     public function upload(Request $request, $id)
     {
         if( $request->hasFile('file') ) {
+            $file = Files::find($id);
+
             // Upload and Save File
             $file_upload = $request->file('file');
             $filename = $file_upload->getClientOriginalName();
-            $filepath = $request->file('file')->storeAs('files', $filename);
-            $filefolder = 'files';
+
+            $filefolder = '';
+
+            if ($file->type == 1) {
+                $filefolder = 'files';
+            }
+
+            if ($file->type == 2) {
+                $filefolder = 'documents';
+            }
+
+            if ($file->type == 3) {
+                $filefolder = 'files';
+            }
+
+            $filepath = $request->file('file')->storeAs($filefolder, $filename);
             $file_size = File::size($file_upload);
             
-            $file = Files::find($id);
+            
             $file->filepath    = $filepath;
             $file->filename    = $filename;
             $file->name        = strip_tags( $request->filename );
@@ -330,10 +346,18 @@ class DocumentationController extends Controller
 
             session()->flash('alert-success', 'A new file uploaded successfully!');
 
-            return redirect()->route('technical-documentation.index');
+            if ($file->type == 1) {
+                return redirect()->route('firmwares.index');
+            }
+
+            if ($file->type == 2) {
+                return redirect()->route('technical-documentation.index');
+            }
+
+            if ($file->type == 3) {
+                return redirect()->route('certificates.index');
+            }
         }
-
-
     }
 
     /**

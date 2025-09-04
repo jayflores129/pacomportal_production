@@ -13,7 +13,7 @@
           
                 <h2>Update</h2>
                 <p>
-                  Upload a new file of <b>{{ optional($file)->filename }}</b>
+                  Upload a new file for <b>{{ optional($file)->filename }}</b>
                 </p>
                 <hr>
 
@@ -22,7 +22,7 @@
 
                   <div class="form-group">
                         <label for="selectCat">Upload File</label>
-                        <input type="file" name="file" class="border" style="border:1px solid #eee;padding: 10px;">
+                        <input type="file" name="file" class="border" style="border:1px solid #eee;padding: 10px;" required>
                     </div>
                 
                     <button type='submit' class="btn-brand btn-brand-icon btn-brand-primary" id='btnLoad'><i class="fa fa-check"></i><span>Submit</span></button>

@@ -289,7 +289,7 @@ class FirmwareController extends Controller
 
                 // Send Notifications for the latest update
                 event(new LatestFiles($file));
-            }
+            } 
 
             $request->session()->flash('alert-success', 'New software/firmware has been successfully added!');
 
