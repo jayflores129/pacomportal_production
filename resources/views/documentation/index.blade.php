@@ -88,7 +88,13 @@
                           <td><?php $document = DB::table('documents')->where('file_id', $item->id)->value('name');  ?>
                           <ul class="list-inline">
 
-                            <li><a href="{{ URL::to('/download/' . $item->id ) }}" target="_blank" class="btn-brand btn-brand-success btn-brand-icon downloadable-file" download><i class="fa fa-download"></i><span>Download</span></a></li>
+                            <li>
+                              <a href="{{ URL::to('/download/' . $item->id ) }}" target="_blank" class="btn-brand btn-brand-success btn-brand-icon downloadable-file">
+                                <i class="fa fa-download"></i>
+                                <span>Download</span>
+                              </a>
+                            </li>
+
                             @if( Auth::user()->isAdmin() )
                               <li>{!! Form::open([
                                  'method' => 'delete',
@@ -241,7 +247,7 @@
 
     })(jQuery) 
 
-    document.getElementById('notify').addEventListener('click', async (e) => {
+    document.getElementById('notify')?.addEventListener('click', async (e) => {
       const { checked } = e.target;
 
       var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content')

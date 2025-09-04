@@ -412,10 +412,18 @@ class FilesController extends Controller
         {
             $filename = Files::where('id', $id)->value('filename');
 
-           $path = storage_path( 'app/files/' . $filename); 
+            $file_path = 'app/files/' . $filename;
+
+           $path = storage_path($file_path); 
+
+        //    return $path;
 
            if (!file_exists($path)) {
             return '
+                <p>File  <b>'. $filename .'</b> does not exist.</p>
+                <a href="/technical-documentation/upload/'.$id.'">
+                    <button>Upload new File</button>
+                </a>
                 <script>
                     alert("File does not exist.");
                     window.history.back();
@@ -432,8 +440,9 @@ class FilesController extends Controller
                 $company = '';
             }
              
-            DB::table('files')->where( 'id', $id )
-                       ->increment( 'downloads', 1 );   
+            DB::table('files')
+                ->where( 'id', $id )
+                ->increment( 'downloads', 1 );   
 
                 
             $download = new Download();
@@ -441,7 +450,18 @@ class FilesController extends Controller
             $download->user_id = Auth::user()->id;
             $download->company_name = $company;
             $download->save(); 
-           return response()->download($path);
+
+            header('Content-Description: File Transfer');
+            header('Content-Type: application/octet-stream');
+            header('Content-Disposition: attachment; filename="' . basename($path) . '"');
+            header('Expires: 0');
+            header('Cache-Control: must-revalidate');
+            header('Pragma: public');
+            header('Content-Length: ' . filesize($path));
+            readfile($path);
+            exit;
+
+        //    return response()->download($path);
 
         }
         else {

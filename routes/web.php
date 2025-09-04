@@ -302,6 +302,8 @@ Route::group(['middleware' => 'auth'], function()
 
     // Technical Documenation Routes
     Route::resource('/technical-documentation', 'DocumentationController');
+    Route::get('/technical-documentation/upload/{id}', ['as' => 'firmwares.view_upload', 'uses' => 'DocumentationController@view_upload']);
+    Route::post('/technical-documentation/upload/{id}', ['as' => 'firmwares.upload', 'uses' => 'DocumentationController@upload']);
     Route::get('/technical-documentation/create', 'DocumentationController@create')->middleware(CheckAdmin::class);
     Route::post('/technical-documentation/store', 'DocumentationController@store')->middleware(CheckAdmin::class);
     Route::get('/technical-documentation/edit-category/{id}', 'DocumentationController@editCategoryName')->middleware(CheckAdmin::class);

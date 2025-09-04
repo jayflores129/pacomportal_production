@@ -215,7 +215,7 @@
 
     })(jQuery) 
 
-    document.getElementById('notify').addEventListener('click', async (e) => {
+    document.getElementById('notify')?.addEventListener('click', async (e) => {
       const { checked } = e.target;
 
       var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content')

@@ -3615,7 +3615,7 @@ __webpack_require__(12);
 
 var sidebarMenu = document.getElementById('toggle-menu');
 
-sidebarMenu.addEventListener('click', hideSidebar);
+sidebarMenu?.addEventListener('click', hideSidebar);
 
 function hideSidebar() {
 

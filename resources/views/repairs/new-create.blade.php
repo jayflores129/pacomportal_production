@@ -106,7 +106,7 @@
                         <div class="form-group row">
                           <label for="date-requested" class="col-sm-3 col-form-label">Date Requested <span class="text text-danger">*</span><br></label>
                           <div class="col-sm-9">
-                            <input type="date" class="form-control-date" name="date-requested" id="date-requested" required>
+                            <input type="date" class="form-control-date" name="date-requested" id="date-requested" max="{{ date('Y-m-d') }}" required>
                           </div>
                         </div>
 

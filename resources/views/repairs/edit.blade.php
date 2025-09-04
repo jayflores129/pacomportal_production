@@ -38,7 +38,7 @@
                     <div class="form-group row mt-10">
                       <label for="requested-date" class="col-sm-3 col-form-label">Date Requested</label>
                       <div class="col-sm-9">
-                        <input type="date"  name="requested_date" class="form-control form-control-plaintext" id="requested-date" value="{{ $repair->requested_date }}" read-only>
+                        <input type="date"  name="requested_date" class="form-control form-control-plaintext" id="requested-date" value="{{ $repair->requested_date }}" max="{{ date('Y-m-d') }}" read-only>
                       </div>
                     </div>
                   </div>

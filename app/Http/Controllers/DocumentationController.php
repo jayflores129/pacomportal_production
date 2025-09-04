@@ -87,7 +87,12 @@ class DocumentationController extends Controller
 
         $files_collection = json_encode($temp_file);
 
-        return view('documentation/index')->with(['files' => $files, 'categories' => $categories, 'releases' => $releases, 'files_collection' => $files_collection ]);
+        return view('documentation/index')->with([
+            'files' => $files, 
+            'categories' => $categories, 
+            'releases' => $releases, 
+            'files_collection' => $files_collection
+        ]);
     }
 
 
@@ -294,6 +299,41 @@ class DocumentationController extends Controller
             return redirect()->route('technical-documentation.index');
         }
   
+    }
+
+    public function view_upload($id)
+    {
+        $file = Files::where('id', $id)->first();
+
+        return view('documentation/upload', [
+            'file' => $file
+        ]);
+    }
+
+    public function upload(Request $request, $id)
+    {
+        if( $request->hasFile('file') ) {
+            // Upload and Save File
+            $file_upload = $request->file('file');
+            $filename = $file_upload->getClientOriginalName();
+            $filepath = $request->file('file')->storeAs('files', $filename);
+            $filefolder = 'files';
+            $file_size = File::size($file_upload);
+            
+            $file = Files::find($id);
+            $file->filepath    = $filepath;
+            $file->filename    = $filename;
+            $file->name        = strip_tags( $request->filename );
+            $file->filesize    = $file_size;
+            $file->filefolder  = $filefolder;
+            $file->save();
+
+            session()->flash('alert-success', 'A new file uploaded successfully!');
+
+            return redirect()->route('technical-documentation.index');
+        }
+
+
     }
 
     /**
