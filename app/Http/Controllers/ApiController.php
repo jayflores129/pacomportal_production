@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use App\Files;
+use App\Models\Files;
 use DB;
 use Response;
-use App\Documents;
+use App\Models\Documents;
 
 class ApiController extends Controller
 {
@@ -194,22 +194,20 @@ class ApiController extends Controller
      * @param  int  $id
      * @return response file
      */
-    public function download( $id )
+    public function download($id)
     {
+        $filename = Files::where('id', $id)->value('filename');
 
-       $filename = Files::where('id', $id)->value('filename');
+        if (empty($filename)) {
+            return response()->json(['data' => 'Resource not found'], 404);
+        }
 
+        $filePath = storage_path('app/files/' . $filename);
 
-       if( empty($filename) ) {
-       		return response()->json([
-				    'data' => 'Resource not found',
-				]);
-       } else {
-
-	       return response()->download( storage_path( 'app/files/' . $filename ) );
-
-       }
-
+        if (!file_exists($filePath)) {
+            return response()->json(['data' => 'File not found on disk'], 404);
+        }
+        return response()->download($filePath, basename($filename));
     }
 
     /**
@@ -217,24 +215,25 @@ class ApiController extends Controller
      * @param  int  $id
      * @return response file
      */
-    public function downloadDocument( $id )
+    public function downloadDocument($id)
     {
+        $filename = Documents::where('id', $id)->value('name');
 
-       $filename = Documents::where('id', $id)->value('name');
+        if (empty($filename)) {
+            return response()->json([
+                'data' => 'Resource not found',
+            ], 404);
+        }
 
+        $filePath = storage_path('app/documents/' . $filename);
 
-       if( empty($filename) ) {
-       		return response()->json([
-				    'data' => 'Resource not found',
-				]);
-       } else {
+        if (!file_exists($filePath)) {
+            return response()->json([
+                'data' => 'File not found on disk',
+            ], 404);
+        }
 
-	       return response()->download( storage_path( 'app/documents/' . $filename ) );
-
-       }
-
-
+        return response()->download($filePath, basename($filename));
     }
-
 
 }
