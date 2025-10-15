@@ -21,7 +21,7 @@ class ApiController extends Controller
         $files     = DB::table('files')
                     ->where('type', 1)
                     ->get()
-                    ->sortBy('DESC'); 
+                    ->sortBy('DESC');
 
         $categories = DB::table('categories')
                     ->where( function($query) {
@@ -35,7 +35,7 @@ class ApiController extends Controller
                     })
                     ->get();
 
-	     $firmware_files = [];                   
+	     $firmware_files = [];
 	     $temp_file = [];
 	     $count = 0;
 
@@ -57,9 +57,9 @@ class ApiController extends Controller
                             ->get();
 
                         foreach( $db_files as $file ) {
-                            $count++;   
+                            $count++;
 
-                            $document = DB::table('documents')->where('file_id', $file->id)->value('name'); 
+                            $document = DB::table('documents')->where('file_id', $file->id)->value('name');
                             $document_id = DB::table('documents')->where('file_id', $file->id)->value('id');
 
 
@@ -77,8 +77,8 @@ class ApiController extends Controller
                             $firmware_files[] = $temp_file;
                         }
                     $count = 0;
-            }    
-        }               
+            }
+        }
 
 
 
@@ -86,17 +86,17 @@ class ApiController extends Controller
     }
 
     /**
-     * Retrive all Technical Documentation
+     * Retrieve all Technical Documentation
      * @return array
      */
-    public function tecnicalDocumentation()
+    public function technicalDocumentation()
     {
         $files      = DB::table('files')
                         ->where('type', 2)
                         ->get()
                         ->sortBy('DESC');
 
- 
+
         $categories = DB::table('categories')
                         ->where( function($query) {
                                 $query->where('file_type', 2);
@@ -110,7 +110,7 @@ class ApiController extends Controller
                         })
                         ->get();
 
-         $technical_files = [];                   
+         $technical_files = [];
          $temp_file      = [];
          $count          = 0;
 
@@ -133,7 +133,7 @@ class ApiController extends Controller
                                 ->get();
 
                              foreach( $db_files as $file ) {
-                                $count++;  
+                                $count++;
                                 $document = DB::table('documents')->where('file_id', $file->id)->value('name');
                                 $document_id = DB::table('documents')->where('file_id', $file->id)->value('id');
 
@@ -150,15 +150,15 @@ class ApiController extends Controller
                             }
                         $count = 0;
                 }
-                
 
-         }               
+
+         }
 
         return $technical_files;
     }
 
     /**
-     * Retreives all certificats
+     * Retrieves all certificates
      * @return array
      */
     public function certificates()
@@ -168,7 +168,7 @@ class ApiController extends Controller
                 ->get()
                 ->sortBy('DESC');
 
-        $output   = [];        
+        $output   = [];
         $response = [];
         $count    = 0;
 
@@ -183,21 +183,21 @@ class ApiController extends Controller
 
             $output[] = $response;
 
-        }        
+        }
 
-        return $output;      
-            
+        return $output;
+
     }
 
     /**
      * Download using the id of the file
-     * @param  int  $id 
-     * @return response file     
+     * @param  int  $id
+     * @return response file
      */
     public function download( $id )
     {
 
-       $filename = Files::where('id', $id)->value('filename');	
+       $filename = Files::where('id', $id)->value('filename');
 
 
        if( empty($filename) ) {
@@ -214,15 +214,15 @@ class ApiController extends Controller
 
     /**
      * Download using the id of the document
-     * @param  int  $id 
-     * @return response file    
+     * @param  int  $id
+     * @return response file
      */
     public function downloadDocument( $id )
     {
 
-       $filename = Documents::where('id', $id)->value('name');	
+       $filename = Documents::where('id', $id)->value('name');
 
-  
+
        if( empty($filename) ) {
        		return response()->json([
 				    'data' => 'Resource not found',
