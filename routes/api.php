@@ -19,7 +19,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/firmware', [ApiController::class, 'firmware']);
+Route::get('/firmwares', [ApiController::class, 'firmware']);
 Route::get('/download/{id}', [ApiController::class, 'download']);
 Route::get('/download-document/{id}', [ApiController::class, 'downloadDocument']);
 Route::get('/technical-documentation', [ApiController::class, 'technicalDocumentation']);
